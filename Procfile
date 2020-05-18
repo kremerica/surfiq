@@ -1,1 +1,1 @@
-web: gunicorn surfiq.wsgi
+web: gunicorn mysite.wsgi
