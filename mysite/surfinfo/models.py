@@ -41,7 +41,10 @@ class SurfSession(models.Model):
     surfScore = models.IntegerField()
     crowdScore = models.CharField(max_length=20)
 
+    # tides throughout a surf session
     tides = models.ManyToManyField(Tide)
+
+    # swells at the start of a surf session
     swells = models.ManyToManyField(Swell)
 
     board = models.CharField(max_length=100)
