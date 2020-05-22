@@ -50,4 +50,21 @@ class SurfSession(models.Model):
     board = models.CharField(max_length=100)
 
     def __str__(self):
+        #    print('**swells**')
+        #    for timeBlock in surfReport['data']['wave']:
+        #        #    print('timestamp: ' + str(timeBlock['timestamp']))
+        #        print(datetime.fromtimestamp(timeBlock['timestamp']))
+        #
+        #        for each in timeBlock['swells']:
+        #            if each['height'] != 0:
+        #                print(each)
+        #        print()
+
+        #    print('**tides**')
+        #    for timeBlock in tideReport['data']['tides']:
+        #        print(datetime.fromtimestamp(timeBlock['timestamp']))
+        #        print(timeBlock['height'])
+        #        if timeBlock['type'] != 'NORMAL':
+        #            print(timeBlock['type'])
+        #        print()
         return str(self.spotName) + ': ' + str(self.waveCount) + ' waves'
