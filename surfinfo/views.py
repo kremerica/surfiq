@@ -1,5 +1,6 @@
 from django.http import HttpResponse
-from .models import TestModel
+from django.template import loader
+
 from .models import Swell, Tide, SurfSession
 import requests
 import json
@@ -16,25 +17,7 @@ def index(request):
         'https://services.surfline.com/kbyg/spots/forecasts/tides?spotId=5842041f4e65fad6a7708807&days=1')
     tideReport = json.loads(tides.text)
 
-#    print('**swells**')
-#    for timeBlock in surfReport['data']['wave']:
-#        #    print('timestamp: ' + str(timeBlock['timestamp']))
-#        print(datetime.fromtimestamp(timeBlock['timestamp']))
-
-#        for each in timeBlock['swells']:
-#            if each['height'] != 0:
-#                print(each)
-#        print()
-
-#    print('**tides**')
-#    for timeBlock in tideReport['data']['tides']:
-#        print(datetime.fromtimestamp(timeBlock['timestamp']))
-#        print(timeBlock['height'])
-#        if timeBlock['type'] != 'NORMAL':
-#            print(timeBlock['type'])
-#        print()
-
-# extract session start and end time (hour of day)
+    # extract session start and end time (hour of day)
     # assign arbitrary session start time
     startTime = datetime.now()
 
@@ -49,16 +32,15 @@ def index(request):
         # create a SurfSession object for an arbitrary hour for TODAY's surf conditions
         # create and save the base SurfSession object
         todaySession = SurfSession(spotName='test spot',
-                                  surflineId='5842041f4e65fad6a7708807',
-                                  timeIn=startTime,
-                                  timeOut=endTime,
-                                  waveCount=10,
-                                  surfScore=5,
-                                  crowdScore=5,
-                                  board='UNTITLED 5\'11')
+                                   surflineId='5842041f4e65fad6a7708807',
+                                   timeIn=startTime,
+                                   timeOut=endTime,
+                                   waveCount=10,
+                                   surfScore=5,
+                                   crowdScore=5,
+                                   board='UNTITLED 5\'11')
         # save to DB
         todaySession.save()
-
 
         # find the "hour index" that maps to the same hour as the start of the session
         startHourIndex = startTime.hour
@@ -68,6 +50,7 @@ def index(request):
             # plop all non-zero-height swells into Swell objects, save to DB, add to surf session
             if each['height'] != 0:
                 swell = Swell(height=each['height'], period=each['period'], direction=each['direction'])
+                print(swell)
                 swell.save()
                 todaySession.swells.add(swell)
 
@@ -78,6 +61,7 @@ def index(request):
         for each in tideReport['data']['tides']:
             if each['timestamp'] > startTime.timestamp():
                 tide = Tide(timestamp=datetime.fromtimestamp(each['timestamp']), height=each['height'], type=each['type'])
+                print(tide)
                 tide.save()
                 todaySession.tides.add(tide)
 
@@ -89,13 +73,12 @@ def index(request):
     print('**session**')
     print(todaySession)
 
+    template = loader.get_template('surfinfo/index.html')
 
-    # using the TestModel to extract a query string param and save it to DB
-    test = TestModel(name=request.GET['name'], number=2.2, timestamp=make_aware(datetime.now()))
-    test.save()
-
-    # print all TestModel objects to validate that model.save() worked as expected
-#    print(TestModel.objects.all())
+    if 'name' in request.GET:
+        context = {'name': request.GET['name']}
+    else:
+        context = None
 
     # return name of current TestModel object to validate query string parameter was read correctly
-    return HttpResponse('Hi ' + test.name)
+    return HttpResponse(template.render(context, request))

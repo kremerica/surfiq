@@ -27,7 +27,7 @@ class Tide(models.Model):
     type = models.CharField(max_length=20)
 
     def __str__(self):
-        return str(self.timestamp) + ': ' + str(self.height) + ' ft'
+        return str(self.timestamp) + ': ' + str(self.height) + ' ft, ' + self.type
 
 class SurfSpot(models.Model):
     surflineId = models.CharField(max_length=100)
