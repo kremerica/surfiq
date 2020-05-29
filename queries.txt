@@ -1,0 +1,10 @@
+#### DATABASE QUERIES ####
+
+# GET ARBITRARY INFO ABOUT A SURF SESSION (AS LONG AS IT HAS BOTH SWELLS AND TIDES ASSOCIATED)
+SELECT surfinfo_surfsession.id, surfinfo_surfsession.spotName, surfinfo_surfsession.waveCount, surfinfo_surfsession.timeIn, surfinfo_swell.height, surfinfo_swell.direction, surfinfo_swell.period, surfinfo_tide.height as tide
+FROM surfinfo_surfsession
+INNER JOIN surfinfo_surfsession_swells ON surfinfo_surfsession.id = surfinfo_surfsession_swells.surfsession_id
+INNER JOIN surfinfo_surfsession_tides ON surfinfo_surfsession.id = surfinfo_surfsession_tides.surfsession_id
+INNER JOIN surfinfo_swell ON surfinfo_surfsession_swells.swell_id = surfinfo_swell.id
+INNER JOIN surfinfo_tide ON surfinfo_surfsession_tides.tide_id = surfinfo_tide.id
+WHERE surfinfo_surfsession.id = 15
