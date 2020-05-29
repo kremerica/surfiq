@@ -8,3 +8,6 @@ INNER JOIN surfinfo_surfsession_tides ON surfinfo_surfsession.id = surfinfo_surf
 INNER JOIN surfinfo_swell ON surfinfo_surfsession_swells.swell_id = surfinfo_swell.id
 INNER JOIN surfinfo_tide ON surfinfo_surfsession_tides.tide_id = surfinfo_tide.id
 WHERE surfinfo_surfsession.id = 15
+
+# GRAB ALL SURF SPOTS
+SELECT * FROM surfinfo_surfspot
