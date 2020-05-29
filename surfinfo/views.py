@@ -31,7 +31,7 @@ def index(request):
     if (startTime.date() == swellTime.date()):
         # create a SurfSession object for an arbitrary hour for TODAY's surf conditions
         # create and save the base SurfSession object
-        todaySession = SurfSession(spotName='test spot',
+        todaySession = SurfSession(spotName='Pleasure Point, Santa Cruz',
                                    surflineId='5842041f4e65fad6a7708807',
                                    timeIn=startTime,
                                    timeOut=endTime,
@@ -75,10 +75,7 @@ def index(request):
 
     template = loader.get_template('surfinfo/index.html')
 
-    if 'name' in request.GET:
-        context = {'name': request.GET['name']}
-    else:
-        context = None
+    context = {'surfsession': todaySession}
 
     # return name of current TestModel object to validate query string parameter was read correctly
     return HttpResponse(template.render(context, request))

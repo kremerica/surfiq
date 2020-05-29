@@ -2,16 +2,34 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Surf session test page</title>
+    <title>OM NOM NOM NOM</title>
   </head>
   <body>
-    {%if name %}
-        <p>
-            Hello, {{ name }}
-        </p>
+    {% if surfsession %}
+        <h1>Surf spot: {{ surfsession.spotName }}</h1>
+        <ul>
+            <li>Wave count: {{ surfsession.waveCount }} </li>
+            <li>Swells</li>
+            <ul>
+            {% for each in surfsession.swells.all %}
+                <li>Swell {{ forloop.counter }}: {{ each.height }} ft, {{ each.period }} sec, {{ each.direction }}°</li>
+            {% endfor %}
+            </ul>
+            <li>Tides</li>
+            <ul>
+            {% for each in surfsession.tides.all %}
+                <li>{{ each.timestamp.time }}: {{ each.height }} ft
+                    {% if each.type != 'NORMAL' %}
+                        {{ each.type }}
+                    {% endif %}
+                </li>
+            {% endfor %}
+            </ul>
+        </ul>
     {% else %}
-        <p>No name, bro</p>
+        <p>NO TICKET, GET OFF THE TRAIN</p>
     {% endif %}
-    <p>This is my page, there are many like it but this one is mine</p>
+
+    <p>(╯°□°)╯︵ ┻━┻</p>
   </body>
 </html>
