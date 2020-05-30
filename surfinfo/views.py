@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 from django.utils.timezone import make_aware
 
 
-def index(request):
+def addsession(request):
     surf = requests.get(
         'https://services.surfline.com/kbyg/spots/forecasts/wave?spotId=5842041f4e65fad6a7708807&days=1&intervalHours=1&maxHeights=false')
     surfReport = json.loads(surf.text)
@@ -73,7 +73,7 @@ def index(request):
     print('**session**')
     print(todaySession)
 
-    template = loader.get_template('surfinfo/index.html')
+    template = loader.get_template('surfinfo/addsession.html')
 
     context = {'surfsession': todaySession}
 
