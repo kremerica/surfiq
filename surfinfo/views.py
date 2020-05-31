@@ -37,9 +37,6 @@ def index(request):
                 'https://services.surfline.com/kbyg/spots/forecasts/tides?spotId=5842041f4e65fad6a7708807&days=1')
             tideReport = json.loads(tides.text)
 
-            # probably not needed
-            swellTime = datetime.fromtimestamp(surfReport['data']['wave'][0]['timestamp'])
-
             # create a SurfSession object for an arbitrary hour for TODAY's surf conditions
             # create and save the base SurfSession object
             todaySession = SurfSession(spotName='Pleasure Point, Santa Cruz',
