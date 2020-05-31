@@ -24,6 +24,8 @@ class AddSessionForm(forms.Form):
     startTime = forms.TimeField(label="Time in", widget=TimeInput)
     endTime = forms.TimeField(label="Time out", widget=TimeInput, initial=datetime.now().time)
 
+    waveCount = forms.IntegerField(label="How many waves?")
+
     surfScore = forms.ChoiceField(label="How good was it?", choices=SURFSCORE_CHOICES, initial=3)
     crowdScore = forms.ChoiceField(label="How crowded was it?", choices=CROWDSCORE_CHOICES, initial=3)
 

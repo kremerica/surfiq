@@ -17,16 +17,70 @@ def index(request):
 
         if form.is_valid():
             # process the data
-            today = datetime.date
+
+            # convert start and end times to datetimes with today's date
             startDateTime = datetime.combine(date.today(), form.cleaned_data['startTime'])
             endDateTime = datetime.combine(date.today(), form.cleaned_data['endTime'])
+
             print(startDateTime)
             print(endDateTime)
             print(form.cleaned_data['surfScore'])
             print(form.cleaned_data['crowdScore'])
 
+            # grab swell info from Surfline API
+            surf = requests.get(
+                'https://services.surfline.com/kbyg/spots/forecasts/wave?spotId=5842041f4e65fad6a7708807&days=1&intervalHours=1&maxHeights=false')
+            surfReport = json.loads(surf.text)
+
+            # grab tide info from Surfline API
+            tides = requests.get(
+                'https://services.surfline.com/kbyg/spots/forecasts/tides?spotId=5842041f4e65fad6a7708807&days=1')
+            tideReport = json.loads(tides.text)
+
+            # probably not needed
+            swellTime = datetime.fromtimestamp(surfReport['data']['wave'][0]['timestamp'])
+
+            # create a SurfSession object for an arbitrary hour for TODAY's surf conditions
+            # create and save the base SurfSession object
+            todaySession = SurfSession(spotName='Pleasure Point, Santa Cruz',
+                                       surflineId='5842041f4e65fad6a7708807',
+                                       timeIn=startDateTime,
+                                       timeOut=endDateTime,
+                                       waveCount=form.cleaned_data['waveCount'],
+                                       surfScore=form.cleaned_data['surfScore'],
+                                       crowdScore=form.cleaned_data['crowdScore'],
+                                       board='UNTITLED 5\'11')
+            # save to DB
+            todaySession.save()
+
+            # find the "hour index" that maps to the same hour as the start of the session
+            startHourIndex = startDateTime.hour
+
+            # extract all swells for that hour
+            for each in surfReport['data']['wave'][startHourIndex]['swells']:
+                # plop all non-zero-height swells into Swell objects, save to DB, add to surf session
+                if each['height'] != 0:
+                    swell = Swell(height=each['height'], period=each['period'], direction=each['direction'])
+                    swell.save()
+                    todaySession.swells.add(swell)
+
+            # extract tide info for every hour in a session
+            #   this clumsy structure is intended to grab hourly tides for a session, PLUS "special" tides
+            #   like high tide, low tide, etc
+            #   it is also intended to grab at least one tide entry, even if session was super short
+            for each in tideReport['data']['tides']:
+                if each['timestamp'] > startDateTime.timestamp():
+                    tide = Tide(timestamp=datetime.fromtimestamp(each['timestamp']), height=each['height'],
+                                type=each['type'])
+                    tide.save()
+                    todaySession.tides.add(tide)
+
+                # if timestamp of this tide "block" is later than session end time, break out of for loop
+                if each['timestamp'] > endDateTime.timestamp():
+                    break
+
             # redirect to a new URL
-            return HttpResponseRedirect('addsession')
+            return HttpResponseRedirect('congratsbro?sessionid=' + str(todaySession.id))
 
     # if this is not a POST request, create the form
     else:
@@ -34,69 +88,13 @@ def index(request):
 
     return render(request, 'surfinfo/sessionform.html', {'form': form, 'today': datetime.now()})
 
-def addsession(request):
-    surf = requests.get(
-        'https://services.surfline.com/kbyg/spots/forecasts/wave?spotId=5842041f4e65fad6a7708807&days=1&intervalHours=1&maxHeights=false')
-    surfReport = json.loads(surf.text)
-
-    tides = requests.get(
-        'https://services.surfline.com/kbyg/spots/forecasts/tides?spotId=5842041f4e65fad6a7708807&days=1')
-    tideReport = json.loads(tides.text)
-
-    # extract session start and end time (hour of day)
-    # assign arbitrary session start time
-    startTime = datetime.now()
-
-    # assign an arbitrary session end time N hours after start time
-    endTime = startTime + timedelta(hours=2)
-
-    # grab timestamp from first swell
-    swellTime = datetime.fromtimestamp(surfReport['data']['wave'][0]['timestamp'])
-
-    # confirm same date between swell and session start time
-    if (startTime.date() == swellTime.date()):
-        # create a SurfSession object for an arbitrary hour for TODAY's surf conditions
-        # create and save the base SurfSession object
-        todaySession = SurfSession(spotName='Pleasure Point, Santa Cruz',
-                                   surflineId='5842041f4e65fad6a7708807',
-                                   timeIn=startTime,
-                                   timeOut=endTime,
-                                   waveCount=10,
-                                   surfScore=5,
-                                   crowdScore=5,
-                                   board='UNTITLED 5\'11')
-        # save to DB
-        todaySession.save()
-
-        # find the "hour index" that maps to the same hour as the start of the session
-        startHourIndex = startTime.hour
-
-        # extract all swells for that hour
-        for each in surfReport['data']['wave'][startHourIndex]['swells']:
-            # plop all non-zero-height swells into Swell objects, save to DB, add to surf session
-            if each['height'] != 0:
-                swell = Swell(height=each['height'], period=each['period'], direction=each['direction'])
-                print(swell)
-                swell.save()
-                todaySession.swells.add(swell)
-
-        # extract tide info for every hour in a session
-        #   this clumsy structure is intended to grab hourly tides for a session, PLUS "special" tides
-        #   like high tide, low tide, etc
-        #   it is also intended to grab at least one tide entry, even if session was super short
-        for each in tideReport['data']['tides']:
-            if each['timestamp'] > startTime.timestamp():
-                tide = Tide(timestamp=datetime.fromtimestamp(each['timestamp']), height=each['height'], type=each['type'])
-                print(tide)
-                tide.save()
-                todaySession.tides.add(tide)
-
-            # if timestamp of this tide "block" is later than session end time, break out of for loop
-            if each['timestamp'] > endTime.timestamp():
-                break
-
-
-    print('**session**')
-    print(todaySession)
+def congratsbro(request):
+    if request.GET['sessionid']:
+        if SurfSession.objects.filter(id=request.GET['sessionid']).exists():
+            todaySession = SurfSession.objects.get(id=request.GET['sessionid'])
+        else:
+            todaySession = None
+    else:
+        todaySession = None
 
     return render(request, 'surfinfo/addsession.html', {'surfsession': todaySession})
