@@ -41,7 +41,11 @@ class SurfSession(models.Model):
     timeOut = models.DateTimeField()
 
     waveCount = models.IntegerField()
+
+    # 1 - 5, higher is better
     surfScore = models.IntegerField()
+
+    # 1 - 5, higher is better
     crowdScore = models.CharField(max_length=20)
 
     # tides throughout a surf session

@@ -1,12 +1,38 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
 from django.template import loader
 
 from .models import Swell, Tide, SurfSession
 import requests
 import json
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from django.utils.timezone import make_aware
 
+from .forms import AddSessionForm
+
+def index(request):
+    # if this is a POST request, process form data
+    if request.method == 'POST':
+        form = AddSessionForm(request.POST)
+
+        if form.is_valid():
+            # process the data
+            today = datetime.date
+            startDateTime = datetime.combine(date.today(), form.cleaned_data['startTime'])
+            endDateTime = datetime.combine(date.today(), form.cleaned_data['endTime'])
+            print(startDateTime)
+            print(endDateTime)
+            print(form.cleaned_data['surfScore'])
+            print(form.cleaned_data['crowdScore'])
+
+            # redirect to a new URL
+            return HttpResponseRedirect('addsession')
+
+    # if this is not a POST request, create the form
+    else:
+        form = AddSessionForm()
+
+    return render(request, 'surfinfo/sessionform.html', {'form': form, 'today': datetime.now()})
 
 def addsession(request):
     surf = requests.get(
@@ -73,9 +99,4 @@ def addsession(request):
     print('**session**')
     print(todaySession)
 
-    template = loader.get_template('surfinfo/addsession.html')
-
-    context = {'surfsession': todaySession}
-
-    # return name of current TestModel object to validate query string parameter was read correctly
-    return HttpResponse(template.render(context, request))
+    return render(request, 'surfinfo/addsession.html', {'surfsession': todaySession})
