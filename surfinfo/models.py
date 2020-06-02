@@ -36,6 +36,7 @@ class SurfSpot(models.Model):
 class SurfSession(models.Model):
     spotName = models.CharField(max_length=100)
     surflineId = models.CharField(max_length=100)
+    spotUtcOffset = models.DecimalField(max_digits=4, decimal_places=2)
 
     timeIn = models.DateTimeField()
     timeOut = models.DateTimeField()

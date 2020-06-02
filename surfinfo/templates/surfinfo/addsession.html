@@ -1,3 +1,4 @@
+{% load tz %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -18,7 +19,7 @@
             <li>Tides</li>
             <ul>
             {% for each in surfsession.tides.all %}
-                <li>{{ each.timestamp.time }}: {{ each.height }} ft
+                <li>{{ each.timestamp|timezone:surftimezone|date:"g:i A" }}: {{ each.height }} ft
                     {% if each.type != 'NORMAL' %}
                         {{ each.type }}
                     {% endif %}

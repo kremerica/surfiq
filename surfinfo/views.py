@@ -5,8 +5,8 @@ from django.template import loader
 from .models import Swell, Tide, SurfSession
 import requests
 import json
-from datetime import datetime, timedelta, date
-from django.utils.timezone import make_aware
+from datetime import datetime, timedelta, date, timezone
+import django.utils.timezone
 
 from .forms import AddSessionForm
 
@@ -17,17 +17,7 @@ def index(request):
 
         if form.is_valid():
             # process the data
-
-            # convert start and end times to datetimes with today's date
-            startDateTime = datetime.combine(date.today(), form.cleaned_data['startTime'])
-            endDateTime = datetime.combine(date.today(), form.cleaned_data['endTime'])
-
-            print(startDateTime)
-            print(endDateTime)
-            print(form.cleaned_data['surfScore'])
-            print(form.cleaned_data['crowdScore'])
-
-            # grab swell info from Surfline API
+            # grab swell info from Surfline API (do this first to get the surf spot UTC offset)
             surf = requests.get(
                 'https://services.surfline.com/kbyg/spots/forecasts/wave?spotId=5842041f4e65fad6a7708807&days=1&intervalHours=1&maxHeights=false')
             surfReport = json.loads(surf.text)
@@ -37,10 +27,25 @@ def index(request):
                 'https://services.surfline.com/kbyg/spots/forecasts/tides?spotId=5842041f4e65fad6a7708807&days=1')
             tideReport = json.loads(tides.text)
 
+            # get the UTC offset from the surf report, use as timezone in surf session
+            surfUtcOffset = timezone(offset=timedelta(hours=surfReport['associated']['utcOffset']))
+
+            # get the UTC offset from the tide report for sanity check
+            tideUtcOffset = timezone(offset=timedelta(hours=tideReport['associated']['utcOffset']))
+
+            # check sanity
+            if surfUtcOffset != tideUtcOffset:
+                print("MISMATCH BETWEEN SURF REPORT TIMEZONE AND TIDE REPORT TIMEZONE")
+
+            # convert start and end times to datetimes with today's date
+            startDateTime = datetime.combine(date.today(), form.cleaned_data['startTime'], tzinfo=surfUtcOffset)
+            endDateTime = datetime.combine(date.today(), form.cleaned_data['endTime'], tzinfo=surfUtcOffset)
+
             # create a SurfSession object for an arbitrary hour for TODAY's surf conditions
             # create and save the base SurfSession object
             todaySession = SurfSession(spotName='Pleasure Point, Santa Cruz',
                                        surflineId='5842041f4e65fad6a7708807',
+                                       spotUtcOffset=surfReport['associated']['utcOffset'],
                                        timeIn=startDateTime,
                                        timeOut=endDateTime,
                                        waveCount=form.cleaned_data['waveCount'],
@@ -67,7 +72,7 @@ def index(request):
             #   it is also intended to grab at least one tide entry, even if session was super short
             for each in tideReport['data']['tides']:
                 if each['timestamp'] > startDateTime.timestamp():
-                    tide = Tide(timestamp=datetime.fromtimestamp(each['timestamp']), height=each['height'],
+                    tide = Tide(timestamp=datetime.fromtimestamp(each['timestamp'], tz=surfUtcOffset), height=each['height'],
                                 type=each['type'])
                     tide.save()
                     todaySession.tides.add(tide)
@@ -94,4 +99,5 @@ def congratsbro(request):
     else:
         todaySession = None
 
-    return render(request, 'surfinfo/addsession.html', {'surfsession': todaySession})
+    # not for future: might need better conversion than typecasting as int for surfsession.spotUtcOffset from decimal to hours + minutes
+    return render(request, 'surfinfo/addsession.html', {'surfsession': todaySession, 'surftimezone': timezone(offset=timedelta(hours=int(todaySession.spotUtcOffset)))})
