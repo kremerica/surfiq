@@ -38,8 +38,8 @@ def index(request):
                 print("MISMATCH BETWEEN SURF REPORT TIMEZONE AND TIDE REPORT TIMEZONE")
 
             # convert start and end times to datetimes with today's date
-            startDateTime = datetime.combine(date.today(), form.cleaned_data['startTime'], tzinfo=surfUtcOffset)
-            endDateTime = datetime.combine(date.today(), form.cleaned_data['endTime'], tzinfo=surfUtcOffset)
+            startDateTime = datetime.combine(datetime.now(tz=surfUtcOffset).date(), form.cleaned_data['startTime'], tzinfo=surfUtcOffset)
+            endDateTime = datetime.combine(datetime.now(tz=surfUtcOffset).date(), form.cleaned_data['endTime'], tzinfo=surfUtcOffset)
 
             print("SESSION START DATETIME: " + str(startDateTime))
             print("SESSION END DATETIME: " + str(endDateTime))
