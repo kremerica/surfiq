@@ -5,6 +5,18 @@ class TimeInput(forms.TimeInput):
     input_type = "time"
 
 class AddSessionForm(forms.Form):
+    # surf spot choice values are ':' delimited pairs of surf spot name and surfline ID
+    # should be cleaned up to something more scalable
+    SURFSPOT_CHOICES = (
+        ('Pleasure Point:5842041f4e65fad6a7708807', 'Pleasure Point'),
+        ('Steamer Lane:5842041f4e65fad6a7708805', 'Steamer Lane'),
+        ('Waddell Creek:5842041f4e65fad6a7708980', 'Waddell Creek'),
+        ('Four Mile:5842041f4e65fad6a7708981', 'Four Mile'),
+        ('The Hook:584204204e65fad6a7709996', 'The Hook'),
+        ('Ocean Beach SF:5842041f4e65fad6a77087f8', 'Ocean Beach SF'),
+        ('Linda Mar, Pacifica:5842041f4e65fad6a7708976', 'Linda Mar, Pacifica'),
+    )
+
     SURFSCORE_CHOICES = (
         (5, 'Legendary'),
         (4, 'Good'),
@@ -21,8 +33,9 @@ class AddSessionForm(forms.Form):
         (1, 'Shit show'),
     )
 
+    surfSpot = forms.ChoiceField(label="Where did you surf?", choices=SURFSPOT_CHOICES)
     startTime = forms.TimeField(label="Time in", widget=TimeInput)
-    endTime = forms.TimeField(label="Time out", widget=TimeInput, initial=datetime.now().time)
+    endTime = forms.TimeField(label="Time out", widget=TimeInput)
 
     waveCount = forms.IntegerField(label="How many waves?")
 

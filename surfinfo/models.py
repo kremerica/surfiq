@@ -29,6 +29,7 @@ class Tide(models.Model):
     def __str__(self):
         return str(self.timestamp) + ': ' + str(self.height) + ' ft, ' + self.type
 
+# not using this one yet, probably shouldn't have created it
 class SurfSpot(models.Model):
     surflineId = models.CharField(max_length=100)
     spotName = models.CharField(max_length=100)

@@ -17,7 +17,9 @@
         <input type="submit" value="Submit">
     </form>
     <script>
-        document.getElementById("greeting").innerHTML += ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][new Date().getDay()] + "?";
+        userDatetime = new Date();
+        document.getElementById("greeting").innerHTML += ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][userDatetime.getDay()] + "?";
+        document.getElementById("id_endTime").value = userDatetime.getHours() + ":" + userDatetime.getMinutes();
     </script>
 </body>
 </html>

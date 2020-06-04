@@ -18,14 +18,20 @@ def index(request):
         if form.is_valid():
             # process the data
             # grab swell info from Surfline API (do this first to get the surf spot UTC offset)
-            surf = requests.get(
-                'https://services.surfline.com/kbyg/spots/forecasts/wave?spotId=5842041f4e65fad6a7708807&days=1&intervalHours=1&maxHeights=false')
+            surfSpotId = form.cleaned_data['surfSpot'].split(':')[1]
+            surfSpotName = form.cleaned_data['surfSpot'].split(':')[0]
+
+            surfUrl = 'https://services.surfline.com/kbyg/spots/forecasts/wave?spotId=' + surfSpotId + '&days=1&intervalHours=1&maxHeights=false'
+            surf = requests.get(surfUrl)
             surfReport = json.loads(surf.text)
 
             # grab tide info from Surfline API
-            tides = requests.get(
-                'https://services.surfline.com/kbyg/spots/forecasts/tides?spotId=5842041f4e65fad6a7708807&days=1')
+            tideUrl = 'https://services.surfline.com/kbyg/spots/forecasts/tides?spotId=' + surfSpotId + '&days=1'
+            tides = requests.get(tideUrl)
             tideReport = json.loads(tides.text)
+
+            # print('SURF URL: ' + surfUrl)
+            # print('TIDE URL: ' + tideUrl)
 
             # get the UTC offset from the surf report, use as timezone in surf session
             surfUtcOffset = timezone(offset=timedelta(hours=surfReport['associated']['utcOffset']))
@@ -41,13 +47,13 @@ def index(request):
             startDateTime = datetime.combine(datetime.now(tz=surfUtcOffset).date(), form.cleaned_data['startTime'], tzinfo=surfUtcOffset)
             endDateTime = datetime.combine(datetime.now(tz=surfUtcOffset).date(), form.cleaned_data['endTime'], tzinfo=surfUtcOffset)
 
-            print("SESSION START DATETIME: " + str(startDateTime))
-            print("SESSION END DATETIME: " + str(endDateTime))
+            # print("SESSION START DATETIME: " + str(startDateTime))
+            # print("SESSION END DATETIME: " + str(endDateTime))
 
             # create a SurfSession object for an arbitrary hour for TODAY's surf conditions
             # create and save the base SurfSession object
-            todaySession = SurfSession(spotName='Pleasure Point, Santa Cruz',
-                                       surflineId='5842041f4e65fad6a7708807',
+            todaySession = SurfSession(spotName=surfSpotName,
+                                       surflineId=surfSpotName,
                                        spotUtcOffset=surfReport['associated']['utcOffset'],
                                        timeIn=startDateTime,
                                        timeOut=endDateTime,
@@ -76,7 +82,7 @@ def index(request):
             for each in tideReport['data']['tides']:
                 # package tide datetime into object for comparison
                 tideDateTime = datetime.fromtimestamp(each['timestamp'], tz=surfUtcOffset)
-                print("TIDE DATETIME: " + str(tideDateTime))
+            #    print("TIDE DATETIME: " + str(tideDateTime))
 
                 if tideDateTime >= startDateTime:
                     tide = Tide(timestamp=tideDateTime, height=each['height'], type=each['type'])
