@@ -94,7 +94,7 @@ def index(request):
     else:
         form = AddSessionForm()
 
-    return render(request, 'surfinfo/sessionform.html', {'form': form, 'today': datetime.now()})
+    return render(request, 'surfinfo/sessionform.html', {'form': form})
 
 def congratsbro(request):
     if request.GET['sessionid']:
