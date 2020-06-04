@@ -41,6 +41,9 @@ def index(request):
             startDateTime = datetime.combine(date.today(), form.cleaned_data['startTime'], tzinfo=surfUtcOffset)
             endDateTime = datetime.combine(date.today(), form.cleaned_data['endTime'], tzinfo=surfUtcOffset)
 
+            print("SESSION START DATETIME: " + str(startDateTime))
+            print("SESSION END DATETIME: " + str(endDateTime))
+
             # create a SurfSession object for an arbitrary hour for TODAY's surf conditions
             # create and save the base SurfSession object
             todaySession = SurfSession(spotName='Pleasure Point, Santa Cruz',
@@ -73,6 +76,7 @@ def index(request):
             for each in tideReport['data']['tides']:
                 # package tide datetime into object for comparison
                 tideDateTime = datetime.fromtimestamp(each['timestamp'], tz=surfUtcOffset)
+                print("TIDE DATETIME: " + str(tideDateTime))
 
                 if tideDateTime >= startDateTime:
                     tide = Tide(timestamp=tideDateTime, height=each['height'], type=each['type'])
