@@ -71,14 +71,16 @@ def index(request):
             #   like high tide, low tide, etc
             #   it is also intended to grab at least one tide entry, even if session was super short
             for each in tideReport['data']['tides']:
-                if each['timestamp'] > startDateTime.timestamp():
-                    tide = Tide(timestamp=datetime.fromtimestamp(each['timestamp'], tz=surfUtcOffset), height=each['height'],
-                                type=each['type'])
+                # package tide datetime into object for comparison
+                tideDateTime = datetime.fromtimestamp(each['timestamp'], tz=surfUtcOffset)
+
+                if tideDateTime >= startDateTime:
+                    tide = Tide(timestamp=tideDateTime, height=each['height'], type=each['type'])
                     tide.save()
                     todaySession.tides.add(tide)
 
                 # if timestamp of this tide "block" is later than session end time, break out of for loop
-                if each['timestamp'] > endDateTime.timestamp():
+                if tideDateTime > endDateTime:
                     break
 
             # redirect to a new URL
