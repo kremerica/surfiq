@@ -53,7 +53,7 @@ def index(request):
             # create a SurfSession object for an arbitrary hour for TODAY's surf conditions
             # create and save the base SurfSession object
             todaySession = SurfSession(spotName=surfSpotName,
-                                       surflineId=surfSpotName,
+                                       surflineId=surfSpotId,
                                        spotUtcOffset=surfReport['associated']['utcOffset'],
                                        timeIn=startDateTime,
                                        timeOut=endDateTime,
