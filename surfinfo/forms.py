@@ -15,6 +15,7 @@ class AddSessionForm(forms.Form):
         ('The Hook:584204204e65fad6a7709996', 'The Hook'),
         ('Ocean Beach SF:5842041f4e65fad6a77087f8', 'Ocean Beach SF'),
         ('Linda Mar, Pacifica:5842041f4e65fad6a7708976', 'Linda Mar, Pacifica'),
+        ('NEW SPOT:NONE', 'REQUEST NEW SPOT'),
     )
 
     SURFSCORE_CHOICES = (
@@ -48,3 +49,6 @@ class AddSessionForm(forms.Form):
 
         if endTime < startTime:
             self.add_error('endTime', 'Time machines forbidden, end time needs to be after start time')
+
+class AddSurfSpot(forms.Form):
+    spotName = forms.CharField(label="Spot name")
