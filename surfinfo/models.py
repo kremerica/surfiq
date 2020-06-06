@@ -3,14 +3,6 @@ from datetime import datetime
 
 
 # Create your models here.
-class TestModel(models.Model):
-    name = models.CharField(max_length=50)
-    number = models.DecimalField(max_digits=4, decimal_places=2)
-    timestamp = models.DateTimeField()
-
-    def __str__(self):
-        return str(self.name) + ': ' + str(self.timestamp) + ', ' + str(self.number)
-
 
 class Swell(models.Model):
     height = models.DecimalField(max_digits=4, decimal_places=2)
@@ -27,7 +19,7 @@ class Tide(models.Model):
     type = models.CharField(max_length=20)
 
     def __str__(self):
-        return str(self.timestamp) + ': ' + str(self.height) + ' ft, ' + self.type
+        return str(self.timestamp) + ': ' + str(self.height) + ' ft, ' + str(self.type)
 
 # not using this one yet, probably shouldn't have created it
 class SurfSpot(models.Model):

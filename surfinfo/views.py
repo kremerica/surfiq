@@ -1,8 +1,9 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.template import loader
+from django.core.mail import send_mail
 
-from .models import Swell, Tide, SurfSession
+from .models import Swell, Tide, SurfSession, SurfSpot
 import requests
 import json
 from datetime import datetime, timedelta, date, timezone
@@ -49,9 +50,6 @@ def index(request):
                 startDateTime = datetime.combine(datetime.now(tz=surfUtcOffset).date(), form.cleaned_data['startTime'], tzinfo=surfUtcOffset)
                 endDateTime = datetime.combine(datetime.now(tz=surfUtcOffset).date(), form.cleaned_data['endTime'], tzinfo=surfUtcOffset)
 
-                # print("SESSION START DATETIME: " + str(startDateTime))
-                # print("SESSION END DATETIME: " + str(endDateTime))
-
                 # create a SurfSession object for an arbitrary hour for TODAY's surf conditions
                 # create and save the base SurfSession object
                 todaySession = SurfSession(spotName=surfSpotName,
@@ -62,7 +60,7 @@ def index(request):
                                            waveCount=form.cleaned_data['waveCount'],
                                            surfScore=form.cleaned_data['surfScore'],
                                            crowdScore=form.cleaned_data['crowdScore'],
-                                           board='UNTITLED 5\'11')
+                                           board='NONE')
                 # save to DB
                 todaySession.save()
 
@@ -84,7 +82,6 @@ def index(request):
                 for each in tideReport['data']['tides']:
                     # package tide datetime into object for comparison
                     tideDateTime = datetime.fromtimestamp(each['timestamp'], tz=surfUtcOffset)
-                #    print("TIDE DATETIME: " + str(tideDateTime))
 
                     if tideDateTime >= startDateTime:
                         tide = Tide(timestamp=tideDateTime, height=each['height'], type=each['type'])
@@ -125,10 +122,11 @@ def newspotbro(request):
 
         if form.is_valid():
             # process the data
-            print(form.cleaned_data['spotName'])
+            newSpot = SurfSpot(spotName=form.cleaned_data['spotName'], surflineId="TBD")
+            newSpot.save()
 
             # redirect to a thank you URL
-            return HttpResponseRedirect('thanksbro?spotname=' + form.cleaned_data['spotName'])
+            return HttpResponseRedirect('thanksbro?spotid=' + str(newSpot.id))
     # if this is not a POST request, create the form
     else:
         form = AddSurfSpot()
@@ -136,9 +134,12 @@ def newspotbro(request):
     return render(request, 'surfinfo/addsurfspot.html', {'form': form})
 
 def thanksbro(request):
-    if request.GET['spotname']:
-        spotName = request.GET['spotname'];
+    if request.GET['spotid']:
+        if SurfSpot.objects.filter(id=request.GET['spotid']).exists():
+            newSpot = SurfSpot.objects.get(id=request.GET['spotid'])
+        else:
+            newSpot = None
     else:
-        spotName = None
+        newSpot = None
 
-    return render(request, 'surfinfo/spotthankyou.html', {'spotName': spotName})
+    return render(request, 'surfinfo/spotthankyou.html', {'newSpot': newSpot})
