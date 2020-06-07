@@ -57,7 +57,7 @@ def index(request):
                                            spotUtcOffset=surfReport['associated']['utcOffset'],
                                            timeIn=startDateTime,
                                            timeOut=endDateTime,
-                                           waveCount=form.cleaned_data['waveCount'],
+                                           waveCount=0,
                                            surfScore=form.cleaned_data['surfScore'],
                                            crowdScore=form.cleaned_data['crowdScore'],
                                            board='NONE')
@@ -113,7 +113,7 @@ def congratsbro(request):
         todaySession = None
 
     # note for future: might need better conversion than typecasting as int for surfsession.spotUtcOffset from decimal to hours + minutes
-    return render(request, 'surfinfo/addsession.html', {'surfsession': todaySession, 'surftimezone': timezone(offset=timedelta(hours=int(todaySession.spotUtcOffset)))})
+    return render(request, 'surfinfo/sessionthankyou.html', {'surfsession': todaySession, 'surftimezone': timezone(offset=timedelta(hours=int(todaySession.spotUtcOffset)))})
 
 def newspotbro(request):
     # if this is a POST request, process form data
@@ -131,7 +131,7 @@ def newspotbro(request):
     else:
         form = AddSurfSpot()
 
-    return render(request, 'surfinfo/addsurfspot.html', {'form': form})
+    return render(request, 'surfinfo/surfspotform.html', {'form': form})
 
 def thanksbro(request):
     if request.GET['spotid']:

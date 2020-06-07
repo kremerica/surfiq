@@ -7,9 +7,9 @@
   </head>
   <body>
     {% if surfsession %}
-        <h1>Surf spot: {{ surfsession.spotName }}</h1>
+    <h1>Thank you!</h1>
+    <h2>Some info about your surf today at {{ surfsession.spotName }}:</h2>
         <ul>
-            <li>Wave count: {{ surfsession.waveCount }} </li>
             <li>Swells</li>
             <ul>
             {% for each in surfsession.swells.all %}
@@ -28,9 +28,14 @@
             </ul>
         </ul>
     {% else %}
-        <p>NO TICKET, GET OFF THE TRAIN</p>
+        <p>NO TICKET BRO, GET OFF THE TRAIN</p>
     {% endif %}
-
+    <h2>What happens now?</h2>
+    <p>When we have enough info about surf conditions that you like, we'll start giving you hints for where to go</p>
+    <p>Surfline tells EVERYBODY where to go, we'll tell YOU where you had the most fun last time you saw these conditions</p>
+    <p>Imagine knowing where you had the most fun surfing last time the swell was 1.7 ft WNW 301º at a 2.4 ft falling tide</p>
+    <p>Thanks for feeding us data so that we can make this work right</p>
+    <p>Happy surfing!</p>
     <p>(╯°□°)╯︵ ┻━┻</p>
   </body>
 </html>
