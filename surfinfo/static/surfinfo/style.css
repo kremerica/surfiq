@@ -1,4 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans+Condensed:wght@300&family=Oswald:wght@300&display=swap');
+/* strip away some ugly stuff */
+input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
 /* name some colors */
 :root {
     --accent_color: #FF0266;
