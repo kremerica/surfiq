@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans+Condensed:wght@300&family=Oswald:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Open+Sans+Condensed:wght@300;700&family=Open+Sans:wght@300;400&display=swap');
+
 /* name some colors and fonts*/
 :root {
     --accent_color: #FF0266;
@@ -6,7 +7,7 @@
 
     --header_font: 'Montserrat', sans-serif;
     --subheader_font: 'Montserrat', sans-serif;
-    --body_font: 'Oswald', sans-serif;
+    --body_font: 'Open Sans', serif;
 }
 
 /* catch-all style rules */
@@ -34,6 +35,7 @@ input, select, option {
 input[type=submit] {
     margin-top: 15px;
     font-size: 1.5em;
+    font-family: var(--header_font);
     text-transform: uppercase;
     background-color: var(--accent_color);
     color: AliceBlue;
