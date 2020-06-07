@@ -1,20 +1,57 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans+Condensed:wght@300&family=Oswald:wght@300&display=swap');
+/* name some colors */
+:root {
+    --accent_color: #FF0266;
+    --error_color: #CC0000;
+}
 
+/* catch-all style rules */
 body {
     background-color: #384047;
 }
 * {
     font-family: 'Oswald', sans-serif;
-    color: white;
+    color: AliceBlue;
+    margin-left: 4px;
 }
 
+/* headers */
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Montserrat', sans-serif;
 }
+h1 {
+    color: var(--accent_color)
+}
 
+/* form stuff */
 input, select, option {
     color: black;
 }
-.button {
-    color: black;
+input[type=submit] {
+    margin-top: 15px;
+    font-size: 1.5em;
+    text-transform: uppercase;
+    background-color: var(--accent_color);
+    color: AliceBlue;
+    border-style: none;
+}
+.errorlist {
+    list-style-type: none;
+    color: var(--error_color);
+}
+
+/* lists */
+.list_section_header {
+    color: var(--accent_color);
+    font-weight: bold;
+    text-transform: uppercase;
+    list-style-type: none;
+}
+
+/* tables */
+tr {
+    height: 2.5em;
+}
+th {
+    text-align: right;
 }

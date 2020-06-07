@@ -4,6 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OM NOM NOM NOM</title>
     <link rel="stylesheet" type="text/css" href="{% static 'surfinfo/style.css' %}">
   </head>
@@ -12,13 +13,13 @@
     <h1>Thank you!</h1>
     <h2>Some info about your surf today at {{ surfsession.spotName }}:</h2>
         <ul>
-            <li>Swells</li>
+            <li class="list_section_header">Swells</li>
             <ul>
             {% for each in surfsession.swells.all %}
                 <li>Swell {{ forloop.counter }}: {{ each.height }} ft, {{ each.period }} sec, {{ each.direction }}°</li>
             {% endfor %}
             </ul>
-            <li>Tides</li>
+            <li class="list_section_header">Tides</li>
             <ul>
             {% for each in surfsession.tides.all %}
                 <li>{{ each.timestamp|timezone:surftimezone|date:"g:i A" }}: {{ each.height }} ft
