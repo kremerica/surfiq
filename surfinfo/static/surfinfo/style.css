@@ -1,15 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans+Condensed:wght@300&family=Oswald:wght@300&display=swap');
-/* strip away some ugly stuff */
-input {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-}
-
-/* name some colors */
+/* name some colors and fonts*/
 :root {
     --accent_color: #FF0266;
     --error_color: #CC0000;
+
+    --header_font: 'Montserrat', sans-serif;
+    --subheader_font: 'Montserrat', sans-serif;
+    --body_font: 'Oswald', sans-serif;
 }
 
 /* catch-all style rules */
@@ -17,14 +14,14 @@ body {
     background-color: #384047;
 }
 * {
-    font-family: 'Oswald', sans-serif;
+    font-family: var(--body_font);
     color: AliceBlue;
     margin-left: 4px;
 }
 
 /* headers */
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Montserrat', sans-serif;
+    font-family: var(--header_font)
 }
 h1 {
     color: var(--accent_color)
@@ -41,6 +38,8 @@ input[type=submit] {
     background-color: var(--accent_color);
     color: AliceBlue;
     border-style: none;
+
+    -webkit-appearance: none;
 }
 .errorlist {
     list-style-type: none;
