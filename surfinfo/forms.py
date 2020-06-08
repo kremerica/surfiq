@@ -21,7 +21,7 @@ class AddSessionForm(forms.Form):
     SURFSCORE_CHOICES = (
         (5, 'Legendary'),
         (4, 'Good'),
-        (3, 'OK'),
+        (3, 'It was OK'),
         (2, 'Not good'),
         (1, 'Better off not going'),
     )
@@ -29,7 +29,7 @@ class AddSessionForm(forms.Form):
     CROWDSCORE_CHOICES = (
         (5, 'Empty'),
         (4, 'A few people out'),
-        (3, 'Busy, not crowded'),
+        (3, 'Busy, but not too crowded'),
         (2, 'Crowded, wave count reduced'),
         (1, 'Shit show'),
     )
@@ -41,7 +41,7 @@ class AddSessionForm(forms.Form):
 #    waveCount = forms.IntegerField(label="How many waves?")
 
     surfScore = forms.ChoiceField(label="How good?", choices=SURFSCORE_CHOICES, initial=3)
-    crowdScore = forms.ChoiceField(label="How crowded?", choices=CROWDSCORE_CHOICES, initial=3)
+    crowdScore = forms.ChoiceField(label="Crowded?", choices=CROWDSCORE_CHOICES, initial=3)
 
     def clean(self):
         startTime = self.cleaned_data['startTime']

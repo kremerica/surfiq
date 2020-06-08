@@ -4,11 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
     <title>TASTY</title>
     <link rel="stylesheet" type="text/css" href="{% static 'surfinfo/style.css' %}">
 </head>
 <body>
-    <h1>Thanks bro</h1>
-    <p>We'll add {{ newSpot.spotName }} as soon as we can!</p>
+    <div>
+        <h1>Thanks bro, we'll add {{ newSpot.spotName }} as soon as we can!</h1>
+    </div>
+    <div>
+        <h2>What happens now?</h2>
+        <p>We'll do the plumbing to set up {{ newSpot.spotName }} as a surf spot</p>
+        <p>Right now there are only a handful of you so we're adding spots manually</p>
+        <h2>And after that?</h2>
+        <p>In the future you'll be able to add your own spots, quick and easy</p>
+        <p>DON'T WORRY, YOU WILL CONTROL WHO (IF ANYBODY) CAN SEE SPOTS YOU ADD</p>
+        <p>We're not trying to bring more surfers to your stompin grounds</p>
+        <p>Happy surfing!</p>
+    </div>
 </body>
 </html>

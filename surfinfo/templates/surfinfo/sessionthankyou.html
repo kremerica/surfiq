@@ -5,39 +5,46 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
     <title>OM NOM NOM NOM</title>
     <link rel="stylesheet" type="text/css" href="{% static 'surfinfo/style.css' %}">
   </head>
   <body>
     {% if surfsession %}
-    <h1>Thank you!</h1>
-    <h2>Some info about your surf today at {{ surfsession.spotName }}:</h2>
-        <ul>
-            <li class="list_section_header">Swells</li>
+    <div>
+        <h1>Thank you!</h1>
+    </div>
+    <div>
+        <h2>Some info about your surf today at {{ surfsession.spotName }}:</h2>
             <ul>
-            {% for each in surfsession.swells.all %}
-                <li>Swell {{ forloop.counter }}: {{ each.height }} ft, {{ each.period }} sec, {{ each.direction }}°</li>
-            {% endfor %}
+                <li class="list_section_header">Swells</li>
+                <ul>
+                {% for each in surfsession.swells.all %}
+                    <li>Swell {{ forloop.counter }}: {{ each.height }} ft, {{ each.period }} sec, {{ each.direction }}°</li>
+                {% endfor %}
+                </ul>
+                <li class="list_section_header">Tides</li>
+                <ul>
+                {% for each in surfsession.tides.all %}
+                    <li>{{ each.timestamp|timezone:surftimezone|date:"g:i A" }}: {{ each.height }} ft
+                        {% if each.type != 'NORMAL' %}
+                            {{ each.type }}
+                        {% endif %}
+                    </li>
+                {% endfor %}
+                </ul>
             </ul>
-            <li class="list_section_header">Tides</li>
-            <ul>
-            {% for each in surfsession.tides.all %}
-                <li>{{ each.timestamp|timezone:surftimezone|date:"g:i A" }}: {{ each.height }} ft
-                    {% if each.type != 'NORMAL' %}
-                        {{ each.type }}
-                    {% endif %}
-                </li>
-            {% endfor %}
-            </ul>
-        </ul>
-    {% else %}
-        <p>NO TICKET BRO, GET OFF THE TRAIN (╯°□°)╯︵ ┻━┻</p>
-    {% endif %}
-    <h2>What happens now?</h2>
-    <p>When we have enough info about surf conditions that you like, we'll start giving you hints for where to go</p>
-    <p>Surfline tells EVERYBODY where to go, we'll tell YOU where you had the most fun last time you saw these conditions</p>
-    <p>Imagine knowing where you had the most fun surfing last time the swell was 1.7 ft WNW 301º at a 2.4 ft falling tide</p>
-    <p>Thanks for feeding us data so that we can make this work right</p>
-    <p>Happy surfing!</p>
+        {% else %}
+            <p>NO TICKET BRO, GET OFF THE TRAIN (╯°□°)╯︵ ┻━┻</p>
+        {% endif %}
+    </div>
+    <div>
+        <h3>What happens now?</h3>
+        <p>When we have enough info about surf conditions that you like, we'll start giving you hints for where to go</p>
+        <p>Surfline tells EVERYBODY where to go, we'll tell YOU where you had the most fun last time you saw these conditions</p>
+        <p>Imagine knowing where you had the most fun surfing last time the swell was 1.7 ft WNW 301º at a 2.4 ft falling tide</p>
+        <p>Thanks for feeding us data so that we can make this work right</p>
+        <p>Happy surfing!</p>
+    </div>
   </body>
 </html>

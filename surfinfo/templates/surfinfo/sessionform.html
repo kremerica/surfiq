@@ -4,20 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
     <title>I EAT SURF SESSIONS</title>
     <link rel="stylesheet" type="text/css" href="{% static 'surfinfo/style.css' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'surfinfo/favicon.ico' %}"/>
 </head>
 <body>
-    <h1 id="greeting">How was it on this beautiful </h1>
-
+    <div>
+        <h1 id="greeting">How was it on this beautiful </h1>
+    </div>
     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-
     <form id="addsession_form" action="" method="post">
         {% csrf_token %}
-        <table>
-            {{ form.as_table }}
-        </table>
-        <input type="submit" value="Submit">
+        <div>
+            <table>
+                {{ form.as_table }}
+            </table>
+        </div>
+        <div>
+            <input type="submit" value="Submit">
+        </div>
     </form>
     <script>
         // set greeting day of week and set endTime value to current time
