@@ -30,7 +30,7 @@ class AddSessionForm(forms.Form):
         (5, 'Empty'),
         (4, 'A few people out'),
         (3, 'Busy, but not too crowded'),
-        (2, 'Crowded, wave count reduced'),
+        (2, 'Too crowded'),
         (1, 'Shit show'),
     )
 
