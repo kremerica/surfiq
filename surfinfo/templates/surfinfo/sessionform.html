@@ -3,8 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>I EAT SURF SESSIONS</title>
     <link rel="stylesheet" type="text/css" href="{% static 'surfinfo/style.css' %}">
     <link rel="shortcut icon" type="image/png" href="{% static 'surfinfo/favicon.ico' %}"/>
@@ -29,7 +28,7 @@
         // set greeting day of week and set endTime value to current time
         userDatetime = new Date();
         document.getElementById("greeting").innerHTML += ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][userDatetime.getDay()] + "?";
-        document.getElementById("id_endTime").value = (userDatetime.getHours()<10?'0':'') + userDatetime.getHours() + ":" + (userDatetime.getMinutes()<10?'0':'') + userDatetime.getMinutes();
+        // document.getElementById("id_endTime").value = (userDatetime.getHours()<10?'0':'') + userDatetime.getHours() + ":" + (userDatetime.getMinutes()<10?'0':'') + userDatetime.getMinutes();
     </script>
 </body>
 </html>
