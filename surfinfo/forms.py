@@ -9,11 +9,13 @@ class AddSessionForm(forms.Form):
     # should be cleaned up to something more scalable
     SURFSPOT_CHOICES = (
         ('Steamer Lane:5842041f4e65fad6a7708805', 'Steamer Lane'),
-        ('26th Ave:5842041f4e65fad6a770898a', '26th Ave'),
         ('Pleasure Point:5842041f4e65fad6a7708807', 'Pleasure Point'),
         ('The Hook:584204204e65fad6a7709996', 'The Hook'),
         ('Four Mile:5842041f4e65fad6a7708981', 'Four Mile'),
         ('Waddell Creek:5842041f4e65fad6a7708980', 'Waddell Creek'),
+        ('Scott Creek:5842041f4e65fad6a7708982', 'Scott Creek'),
+        ('26th Ave:5842041f4e65fad6a770898a', '26th Ave'),
+        ('Manresa:5842041f4e65fad6a770898e', 'Manresa'),
         ('Ocean Beach SF:5842041f4e65fad6a77087f8', 'Ocean Beach SF'),
         ('Linda Mar, Pacifica:5842041f4e65fad6a7708976', 'Linda Mar, Pacifica'),
         ('NEW SPOT:NONE', 'REQUEST NEW SPOT'),
