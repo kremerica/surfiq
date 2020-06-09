@@ -33,6 +33,7 @@ h1, h3 {
 /* form stuff */
 input, select, option {
     color: black;
+    font-size: 1.05em;
 }
 input[type=submit] {
     margin-top: 15px;
