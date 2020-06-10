@@ -13,8 +13,6 @@
 /* catch-all style rules */
 body {
     background-color: #384047;
-}
-* {
     font-family: var(--body_font);
     color: AliceBlue;
 }
@@ -24,13 +22,18 @@ div {
 
 /* headers */
 h1, h2, h3, h4, h5, h6 {
-    font-family: var(--header_font)
+    font-family: var(--header_font);
 }
 h1, h3 {
-    color: var(--accent_color)
+    color: var(--accent_color);
 }
 
 /* form stuff */
+optgroup {
+    color: --var(accent_color);
+    font-weight: bold;
+    font-size: 1.05em;
+}
 input, select, option {
     color: black;
     font-size: 1.05em;
@@ -52,6 +55,7 @@ input[type=submit] {
 .errorlist {
     list-style-type: none;
     color: var(--error_color);
+    padding-left: 0em;
 }
 
 /* lists */
