@@ -143,3 +143,26 @@ def thanksbro(request):
         newSpot = None
 
     return render(request, 'surfinfo/spotthankyou.html', {'newSpot': newSpot})
+
+def databootstrap(request):
+    # open surf data bootstrap file
+    with open("surfinfo/surfdatabootstrap.json", "r") as read_file:
+        surfData = json.load(read_file)
+
+    # proof of ingest
+    print(json.dumps(surfData[60]))
+
+    # for each entry in surfData, create + save a new SurfSession, up to 3 new Swells, and 2 new Tides
+    rawSessionJson = surfData[60]
+
+    processedSession = SurfSession(spotName=rawSessionJson['spotName'],
+                                   surflineId=rawSessionJson['surflineId'],
+                                   spotUtcOffset=-7,
+                                   timeIn=0,
+                                   timeOut=0,
+                                   waveCount=rawSessionJson['waveCount'],
+                                   surfScore=0,
+                                   crowdScore=0,
+                                   board='NONE')
+
+    return HttpResponse(processedSession)

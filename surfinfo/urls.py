@@ -7,4 +7,5 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('newspotbro', views.newspotbro, name='newspotbro'),
     path('thanksbro', views.thanksbro, name='thanksbro'),
+    path('databootstrap', views.databootstrap, name='databootstrap'),
 ]
