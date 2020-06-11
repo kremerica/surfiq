@@ -57,7 +57,7 @@ def index(request):
                                            spotUtcOffset=surfReport['associated']['utcOffset'],
                                            timeIn=startDateTime,
                                            timeOut=endDateTime,
-                                           waveCount=0,
+                                           waveCount=-1,
                                            surfScore=form.cleaned_data['surfScore'],
                                            crowdScore=form.cleaned_data['crowdScore'],
                                            board='NONE')

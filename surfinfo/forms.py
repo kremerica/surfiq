@@ -17,6 +17,7 @@ class AddSessionForm(forms.Form):
                 ('Scott Creek:5842041f4e65fad6a7708982', 'Scott Creek'),
                 ('26th Ave:5842041f4e65fad6a770898a', '26th Ave'),
                 ('Manresa:5842041f4e65fad6a770898e', 'Manresa'),
+                ('Capitola:5842041f4e65fad6a7708ddf', 'Capitola'),
             ),
         ),
         ('San Francisco County', (
