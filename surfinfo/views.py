@@ -64,6 +64,7 @@ def index(request):
                 # save to DB
                 todaySession.save()
 
+
                 # find the "hour index" that maps to the same hour as the start of the session
                 startHourIndex = startDateTime.hour
 
@@ -83,14 +84,10 @@ def index(request):
                     # package tide datetime into object for comparison
                     tideDateTime = datetime.fromtimestamp(each['timestamp'], tz=surfUtcOffset)
 
-                    if tideDateTime >= startDateTime:
+                    if tideDateTime.hour >= startDateTime.hour and endDateTime > tideDateTime:
                         tide = Tide(timestamp=tideDateTime, height=each['height'], type=each['type'])
                         tide.save()
                         todaySession.tides.add(tide)
-
-                    # if timestamp of this tide "block" is later than session end time, break out of for loop
-                    if tideDateTime > endDateTime:
-                        break
 
                 # redirect to a new URL
                 return HttpResponseRedirect('congratsbro?sessionid=' + str(todaySession.id))
