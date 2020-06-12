@@ -146,20 +146,79 @@ def databootstrap(request):
     with open("surfinfo/surfdatabootstrap.json", "r") as read_file:
         surfData = json.load(read_file)
 
-    # proof of ingest
-    print(json.dumps(surfData[60]))
+    # rudimentary check to see if surfdatabootstrap.json has already been loaded into DB
+    if SurfSession.objects.filter(spotName=surfData[0]['spotName']).exists():
+        # already bootstrapped, GTFO
+        return HttpResponse("already bootstrapped bro, ADIOS MOTHAFUCKA")
+    else:
+        # IT'S BOOTSTRAPPIN TIME
 
-    # for each entry in surfData, create + save a new SurfSession, up to 3 new Swells, and 2 new Tides
-    rawSessionJson = surfData[60]
+        # for each entry in surfData, create + save a new SurfSession, up to 3 new Swells, and 2 new Tides
+        for each in surfData:
+            sessionUtcOffsetTz = timezone(offset=timedelta(hours=each['spotUtcOffset']))
 
-    processedSession = SurfSession(spotName=rawSessionJson['spotName'],
-                                   surflineId=rawSessionJson['surflineId'],
-                                   spotUtcOffset=-7,
-                                   timeIn=0,
-                                   timeOut=0,
-                                   waveCount=rawSessionJson['waveCount'],
-                                   surfScore=0,
-                                   crowdScore=0,
-                                   board='NONE')
+            processedSession = SurfSession(spotName=each['spotName'],
+                                           surflineId=each['surflineId'],
+                                           spotUtcOffset=each['spotUtcOffset'],
+                                           timeIn=datetime.fromtimestamp(each['timestampIn'], tz=sessionUtcOffsetTz),
+                                           timeOut=datetime.fromtimestamp(each['timestampOut'], tz=sessionUtcOffsetTz),
+                                           waveCount=each['waveCount'],
+                                           surfScore=each['surfScore'],
+                                           crowdScore=each['crowdScore'],
+                                           board='NONE')
 
-    return HttpResponse(processedSession)
+            # print(processedSession)
+            # print("utcOffset: " + str(processedSession.spotUtcOffset))
+            # print("in: " + str(processedSession.timeIn))
+            # print("out: " + str(processedSession.timeOut))
+            # print("surflineId: " + str(processedSession.surflineId))
+            # print("surfScore: " + str(processedSession.surfScore))
+            # print("crowdScore: " + str(processedSession.crowdScore))
+            # print("wave count: " + str(processedSession.waveCount))
+            processedSession.save()
+
+            # add a max of 3 swells, as long as height is non-zero
+            if each["swell1Height"] != 0:
+                swell1 = Swell(height=each['swell1Height'],
+                               period=each['swell1Period'],
+                               direction=each['swell1Direction'])
+                swell1.save()
+                processedSession.swells.add(swell1)
+                # print("swell 1: " + str(swell1))
+
+            if each["swell2Height"] != 0:
+                swell2 = Swell(height=each['swell2Height'],
+                               period=each['swell2Period'],
+                               direction=each['swell2Direction'])
+                swell2.save()
+                processedSession.swells.add(swell2)
+                # print("swell 2: " + str(swell2))
+
+
+            if each["swell3Height"] != 0:
+                swell3 = Swell(height=each['swell3Height'],
+                               period=each['swell3Period'],
+                               direction=each['swell3Direction'])
+                swell3.save()
+                processedSession.swells.add(swell3)
+                # print("swell 3: " + str(swell3))
+
+            # add start and end tide
+            startTide = Tide(timestamp=datetime.fromtimestamp(each['tideStartTimestamp'], tz=sessionUtcOffsetTz),
+                             height=each['tideStartHeight'],
+                             type='NORMAL')
+            startTide.save()
+            processedSession.tides.add(startTide)
+            # print("start tide: " + str(startTide))
+
+            endTide = Tide(timestamp=datetime.fromtimestamp(each['tideEndTimestamp'], tz=sessionUtcOffsetTz),
+                             height=each['tideEndHeight'],
+                             type='NORMAL')
+            endTide.save()
+            processedSession.tides.add(endTide)
+            # print("end tide: " + str(endTide))
+
+            # print("***")
+            # print("")
+
+    return HttpResponse("all done bro, historical sessions locked and loaded")
