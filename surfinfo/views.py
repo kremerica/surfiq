@@ -152,7 +152,7 @@ def spotthankyou(request):
     return render(request, 'surfinfo/spotthankyou.html', {'newSpot': newSpot})
 
 
-# find historical matches for surf conditions
+# find matching sessions for surf conditions
 def historicalmatches(request):
     height = 2.3
     period = 14
