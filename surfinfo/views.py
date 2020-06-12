@@ -11,6 +11,8 @@ import django.utils.timezone
 
 from .forms import AddSessionForm, AddSurfSpot
 
+
+# adding a session
 def index(request):
     # if this is a POST request, process form data
     if request.method == 'POST':
@@ -47,8 +49,10 @@ def index(request):
                     print("MISMATCH BETWEEN SURF REPORT TIMEZONE AND TIDE REPORT TIMEZONE")
 
                 # convert start and end times to datetimes with today's date
-                startDateTime = datetime.combine(datetime.now(tz=surfUtcOffset).date(), form.cleaned_data['startTime'], tzinfo=surfUtcOffset)
-                endDateTime = datetime.combine(datetime.now(tz=surfUtcOffset).date(), form.cleaned_data['endTime'], tzinfo=surfUtcOffset)
+                startDateTime = datetime.combine(datetime.now(tz=surfUtcOffset).date(), form.cleaned_data['startTime'],
+                                                 tzinfo=surfUtcOffset)
+                endDateTime = datetime.combine(datetime.now(tz=surfUtcOffset).date(), form.cleaned_data['endTime'],
+                                               tzinfo=surfUtcOffset)
 
                 # create a SurfSession object for an arbitrary hour for TODAY's surf conditions
                 # create and save the base SurfSession object
@@ -63,7 +67,6 @@ def index(request):
                                            board='NONE')
                 # save to DB
                 todaySession.save()
-
 
                 # find the "hour index" that maps to the same hour as the start of the session
                 startHourIndex = startDateTime.hour
@@ -100,7 +103,9 @@ def index(request):
 
     return render(request, 'surfinfo/sessionform.html', {'form': form})
 
-def congratsbro(request):
+
+# thank you for adding a session
+def sessionthankyou(request):
     if request.GET['sessionid']:
         if SurfSession.objects.filter(id=request.GET['sessionid']).exists():
             todaySession = SurfSession.objects.get(id=request.GET['sessionid'])
@@ -110,9 +115,12 @@ def congratsbro(request):
         todaySession = None
 
     # note for future: might need better conversion than typecasting as int for surfsession.spotUtcOffset from decimal to hours + minutes
-    return render(request, 'surfinfo/sessionthankyou.html', {'surfsession': todaySession, 'surftimezone': timezone(offset=timedelta(hours=int(todaySession.spotUtcOffset)))})
+    return render(request, 'surfinfo/sessionthankyou.html', {'surfsession': todaySession, 'surftimezone': timezone(
+        offset=timedelta(hours=int(todaySession.spotUtcOffset)))})
 
-def newspotbro(request):
+
+# request a new surf spot
+def requestnewspot(request):
     # if this is a POST request, process form data
     if request.method == 'POST':
         form = AddSurfSpot(request.POST)
@@ -130,7 +138,9 @@ def newspotbro(request):
 
     return render(request, 'surfinfo/surfspotform.html', {'form': form})
 
-def thanksbro(request):
+
+# thank the user for requesting a new surf spot
+def spotthankyou(request):
     if request.GET['spotid']:
         if SurfSpot.objects.filter(id=request.GET['spotid']).exists():
             newSpot = SurfSpot.objects.get(id=request.GET['spotid'])
@@ -141,6 +151,39 @@ def thanksbro(request):
 
     return render(request, 'surfinfo/spotthankyou.html', {'newSpot': newSpot})
 
+
+# find historical matches for surf conditions
+def historicalmatches(request):
+    height = 2.3
+    period = 14
+    direction = 197
+    tide = 2.8
+
+    heightFactor = 0.2
+    periodFactor = 0.2
+    directionFactor = 12
+    tideFactor = 1
+
+    # get a queryset of all sessions
+    sessions = SurfSession.objects.filter(swells__height__gte=height*(1-heightFactor),
+                                          swells__height__lte=height*(1+heightFactor),
+                                          swells__period__gte=period*(1-periodFactor),
+                                          swells__period__lte=period*(1+periodFactor),
+                                          swells__direction__gte=direction-directionFactor,
+                                          swells__direction__lte=direction+directionFactor,
+                                          tides__height__gte=tide-tideFactor,
+                                          tides__height__lte=tide+tideFactor).distinct()
+
+    if sessions.exists():
+        for each in sessions:
+            print(str(each.timeIn.astimezone(timezone(offset=timedelta(hours=int(each.spotUtcOffset)))))
+                  + " at " + each.spotName + ", surf score: " + str(each.surfScore)
+                  + "/5, wave count: " + str(each.waveCount))
+
+    return HttpResponse("testing bro")
+
+
+# bootstrap DB with historical data
 def databootstrap(request):
     # open surf data bootstrap file
     with open("surfinfo/surfdatabootstrap.json", "r") as read_file:
@@ -194,7 +237,6 @@ def databootstrap(request):
                 processedSession.swells.add(swell2)
                 # print("swell 2: " + str(swell2))
 
-
             if each["swell3Height"] != 0:
                 swell3 = Swell(height=each['swell3Height'],
                                period=each['swell3Period'],
@@ -212,8 +254,8 @@ def databootstrap(request):
             # print("start tide: " + str(startTide))
 
             endTide = Tide(timestamp=datetime.fromtimestamp(each['tideEndTimestamp'], tz=sessionUtcOffsetTz),
-                             height=each['tideEndHeight'],
-                             type='NORMAL')
+                           height=each['tideEndHeight'],
+                           type='NORMAL')
             endTide.save()
             processedSession.tides.add(endTide)
             # print("end tide: " + str(endTide))
