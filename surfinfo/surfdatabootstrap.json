@@ -546,10 +546,10 @@
    "swell2Height": 1.7,
    "swell2Period": 18,
    "swell2Direction": 180,
-   "swell3Height": 1.4,
+   "swell3Height": 0,
    "swell3Period": 0,
    "swell3Direction": 0,
-   "waveCount": 0
+   "waveCount": 7
  },
  {
    "spotName": "Steamer Lane",

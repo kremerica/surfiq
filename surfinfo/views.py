@@ -1,7 +1,6 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-from django.template import loader
-from django.core.mail import send_mail
+from django.db.models import Avg, Count, Sum
 
 from .models import Swell, Tide, SurfSession, SurfSpot
 import requests
@@ -154,10 +153,10 @@ def spotthankyou(request):
 
 # find matching sessions for surf conditions
 def historicalmatches(request):
-    height = 2.3
-    period = 14
-    direction = 197
-    tide = 2.7
+    height = 2.8
+    period = 16
+    direction = 187
+    tide = 3
 
     heightFactor = 0.2
     periodFactor = 0.2
@@ -174,15 +173,26 @@ def historicalmatches(request):
                                           tides__height__gte=tide-tideFactor,
                                           tides__height__lte=tide+tideFactor).distinct()
 
+    print()
+    print("*** PREVIOUS SURFS ***")
+
     if sessions.exists():
-        for each in sessions:
-            print(str(each.timeIn.astimezone(timezone(offset=timedelta(hours=int(each.spotUtcOffset)))))
-                  + " at " + each.spotName + ", surf score: " + str(each.surfScore)
-                  + "/5, wave count: " + str(each.waveCount))
+        for each in sessions.values("spotName").annotate(Avg("surfScore"), Count("id")):
+            print(str(each["spotName"]) + ": " +
+                  str(each["id__count"]) + " sessions, avg score " +
+                  str(each["surfScore__avg"]) + "/5")
+
+    print()
+
+#        for each in sessions:
+#            print(str(each.timeIn.astimezone(timezone(offset=timedelta(hours=int(each.spotUtcOffset)))))
+#                  + " at " + each.spotName + ", surf score: " + str(each.surfScore)
+#                  + "/5, wave count: " + str(each.waveCount))
 
     return HttpResponse("testing bro")
 
 
+# -----------------------------------------------------------------------------------
 # bootstrap DB with historical data
 def databootstrap(request):
     # open surf data bootstrap file
