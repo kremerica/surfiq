@@ -92,7 +92,7 @@
    "waveCount": 13
  },
  {
-   "spotName": "Pleasure Point, First Peak",
+   "spotName": "Pleasure Point",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -7,
    "timestampIn": 1531659900,
@@ -138,7 +138,7 @@
    "waveCount": 10
  },
  {
-   "spotName": "Pleasure Point, Sewers",
+   "spotName": "Sewers",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -7,
    "timestampIn": 1532350800,
@@ -184,7 +184,7 @@
    "waveCount": 8
  },
  {
-   "spotName": "Pleasure Point, Sewers",
+   "spotName": "Sewers",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -7,
    "timestampIn": 1532610600,
@@ -322,7 +322,7 @@
    "waveCount": 7
  },
  {
-   "spotName": "Pleasure Point, Sewers",
+   "spotName": "Sewers",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -7,
    "timestampIn": 1534685700,
@@ -391,7 +391,7 @@
    "waveCount": 5
  },
  {
-   "spotName": "Pleasure Point, Sewers",
+   "spotName": "Sewers",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -7,
    "timestampIn": 1536363000,
@@ -460,7 +460,7 @@
    "waveCount": 8
  },
  {
-   "spotName": "Pleasure Point, Sewers",
+   "spotName": "Sewers",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -7,
    "timestampIn": 1536672000,
@@ -644,7 +644,7 @@
    "waveCount": 7
  },
  {
-   "spotName": "Pleasure Point, Sewers",
+   "spotName": "Sewers",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -7,
    "timestampIn": 1538316000,
@@ -943,7 +943,7 @@
    "waveCount": 6
  },
  {
-   "spotName": "Pleasure Point, First Peak",
+   "spotName": "Pleasure Point",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -8,
    "timestampIn": 1550424600,
@@ -1012,7 +1012,7 @@
    "waveCount": 5
  },
  {
-   "spotName": "Pleasure Point, Sewers",
+   "spotName": "Sewers",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -7,
    "timestampIn": 1552839600,
@@ -1081,7 +1081,7 @@
    "waveCount": 5
  },
  {
-   "spotName": "Pleasure Point, Sewers",
+   "spotName": "Sewers",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -7,
    "timestampIn": 1553956500,
@@ -1104,7 +1104,7 @@
    "waveCount": 6
  },
  {
-   "spotName": "Pleasure Point, First Peak",
+   "spotName": "Pleasure Point",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -7,
    "timestampIn": 1554042000,
@@ -1150,7 +1150,7 @@
    "waveCount": 8
  },
  {
-   "spotName": "Pleasure Point, First Peak",
+   "spotName": "Pleasure Point",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -7,
    "timestampIn": 1558098000,
@@ -1357,7 +1357,7 @@
    "waveCount": 9
  },
  {
-   "spotName": "Pleasure Point, Sewers",
+   "spotName": "Sewers",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -7,
    "timestampIn": 1562507100,
@@ -1380,7 +1380,7 @@
    "waveCount": 16
  },
  {
-   "spotName": "Pleasure Point, First Peak",
+   "spotName": "Pleasure Point",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -7,
    "timestampIn": 1562762700,
@@ -1403,7 +1403,7 @@
    "waveCount": 10
  },
  {
-   "spotName": "Pleasure Point, First Peak",
+   "spotName": "Pleasure Point",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -7,
    "timestampIn": 1562936700,
@@ -1426,7 +1426,7 @@
    "waveCount": 8
  },
  {
-   "spotName": "Pleasure Point, Sewers",
+   "spotName": "Sewers",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -7,
    "timestampIn": 1563115800,
@@ -1472,7 +1472,7 @@
    "waveCount": 12
  },
  {
-   "spotName": "Pleasure Point, Sewers",
+   "spotName": "Sewers",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -7,
    "timestampIn": 1563540000,
@@ -1518,7 +1518,7 @@
    "waveCount": 9
  },
  {
-   "spotName": "Pleasure Point, Sewers",
+   "spotName": "Sewers",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -7,
    "timestampIn": 1564231800,
@@ -1541,7 +1541,7 @@
    "waveCount": 16
  },
  {
-   "spotName": "Pleasure Point, Sewers",
+   "spotName": "Sewers",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -7,
    "timestampIn": 1564320300,
@@ -1564,7 +1564,7 @@
    "waveCount": 10
  },
  {
-   "spotName": "Pleasure Point, Sewers",
+   "spotName": "Sewers",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -7,
    "timestampIn": 1564926900,
@@ -1587,7 +1587,7 @@
    "waveCount": 6
  },
  {
-   "spotName": "Pleasure Point, Sewers",
+   "spotName": "Sewers",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -7,
    "timestampIn": 1565444400,
@@ -1610,7 +1610,7 @@
    "waveCount": 9
  },
  {
-   "spotName": "Waddell Creek, Middle",
+   "spotName": "Waddell, Middle",
    "surflineId": "5842041f4e65fad6a7708980",
    "spotUtcOffset": -7,
    "timestampIn": 1566655800,
@@ -1633,7 +1633,7 @@
    "waveCount": 7
  },
  {
-   "spotName": "Waddell Creek, South Reefs",
+   "spotName": "Waddell, South Reefs",
    "surflineId": "5842041f4e65fad6a7708980",
    "spotUtcOffset": -7,
    "timestampIn": 1566740400,
@@ -1656,7 +1656,7 @@
    "waveCount": 9
  },
  {
-   "spotName": "Waddell Creek, South Reefs",
+   "spotName": "Waddell, South Reefs",
    "surflineId": "5842041f4e65fad6a7708980",
    "spotUtcOffset": -7,
    "timestampIn": 1567268100,
@@ -1679,7 +1679,7 @@
    "waveCount": 6
  },
  {
-   "spotName": "Waddell Creek, South Reefs",
+   "spotName": "Waddell, South Reefs",
    "surflineId": "5842041f4e65fad6a7708980",
    "spotUtcOffset": -7,
    "timestampIn": 1568470500,
@@ -1725,7 +1725,7 @@
    "waveCount": 10
  },
  {
-   "spotName": "Pleasure Point, Sewers",
+   "spotName": "Sewers",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -7,
    "timestampIn": 1569246000,
@@ -1748,7 +1748,7 @@
    "waveCount": 8
  },
  {
-   "spotName": "Pleasure Point, Sewers",
+   "spotName": "Sewers",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -7,
    "timestampIn": 1569766200,
@@ -1817,7 +1817,7 @@
    "waveCount": 10
  },
  {
-   "spotName": "Pleasure Point, First Peak",
+   "spotName": "Pleasure Point",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -7,
    "timestampIn": 1571407200,
@@ -1932,7 +1932,7 @@
    "waveCount": 9
  },
  {
-   "spotName": "Waddell Creek, Middle",
+   "spotName": "Waddell, Middle",
    "surflineId": "5842041f4e65fad6a7708980",
    "spotUtcOffset": -8,
    "timestampIn": 1573829100,
@@ -1978,7 +1978,7 @@
    "waveCount": 8
  },
  {
-   "spotName": "Pleasure Point, First Peak",
+   "spotName": "Pleasure Point",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -8,
    "timestampIn": 1574694000,
@@ -2093,7 +2093,7 @@
    "waveCount": 5
  },
  {
-   "spotName": "Pleasure Point, Sewers",
+   "spotName": "Sewers",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -8,
    "timestampIn": 1578156900,
@@ -2116,7 +2116,7 @@
    "waveCount": 6
  },
  {
-   "spotName": "Pleasure Point, Second Peak",
+   "spotName": "Pleasure Point",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -8,
    "timestampIn": 1578149400,
@@ -2139,7 +2139,7 @@
    "waveCount": 9
  },
  {
-   "spotName": "Pleasure Point, First Peak",
+   "spotName": "Pleasure Point",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -8,
    "timestampIn": 1578669300,
@@ -2162,7 +2162,7 @@
    "waveCount": 10
  },
  {
-   "spotName": "Pleasure Point, Sewers",
+   "spotName": "Sewers",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -8,
    "timestampIn": 1578843300,
@@ -2185,7 +2185,7 @@
    "waveCount": 5
  },
  {
-   "spotName": "Pleasure Point, Sewers",
+   "spotName": "Sewers",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -8,
    "timestampIn": 1579273500,
@@ -2208,7 +2208,7 @@
    "waveCount": 9
  },
  {
-   "spotName": "Pleasure Point, Sewers",
+   "spotName": "Sewers",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -8,
    "timestampIn": 1579360800,
@@ -2231,7 +2231,7 @@
    "waveCount": 13
  },
  {
-   "spotName": "Pleasure Point, Rockview",
+   "spotName": "Rockview",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -8,
    "timestampIn": 1579446300,
@@ -2254,7 +2254,7 @@
    "waveCount": 4
  },
  {
-   "spotName": "Pleasure Point, First Peak",
+   "spotName": "Pleasure Point",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -8,
    "timestampIn": 1579533300,
@@ -2277,7 +2277,7 @@
    "waveCount": 7
  },
  {
-   "spotName": "Pleasure Point, Sewers",
+   "spotName": "Sewers",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -8,
    "timestampIn": 1579964700,
@@ -2300,7 +2300,7 @@
    "waveCount": 8
  },
  {
-   "spotName": "Pleasure Point, Sewers",
+   "spotName": "Sewers",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -8,
    "timestampIn": 1580050200,
@@ -2346,7 +2346,7 @@
    "waveCount": 10
  },
  {
-   "spotName": "Waddell Creek, South Reefs",
+   "spotName": "Waddell, South Reefs",
    "surflineId": "5842041f4e65fad6a7708980",
    "spotUtcOffset": -8,
    "timestampIn": 1581174300,
@@ -2369,7 +2369,7 @@
    "waveCount": 7
  },
  {
-   "spotName": "Pleasure Point, Sewers",
+   "spotName": "Sewers",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -8,
    "timestampIn": 1581259200,
@@ -2392,7 +2392,7 @@
    "waveCount": 12
  },
  {
-   "spotName": "Pleasure Point, Sewers",
+   "spotName": "Sewers",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -8,
    "timestampIn": 1581604800,
@@ -2438,7 +2438,7 @@
    "waveCount": 11
  },
  {
-   "spotName": "Waddell Creek, South Reefs",
+   "spotName": "Waddell, South Reefs",
    "surflineId": "5842041f4e65fad6a7708980",
    "spotUtcOffset": -8,
    "timestampIn": 1581951300,
@@ -2461,7 +2461,7 @@
    "waveCount": 9
  },
  {
-   "spotName": "Waddell Creek, South Reefs",
+   "spotName": "Waddell, South Reefs",
    "surflineId": "5842041f4e65fad6a7708980",
    "spotUtcOffset": -8,
    "timestampIn": 1582295400,
@@ -2484,7 +2484,7 @@
    "waveCount": 8
  },
  {
-   "spotName": "Pleasure Point, Sewers",
+   "spotName": "Sewers",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -8,
    "timestampIn": 1583246100,
@@ -2507,7 +2507,7 @@
    "waveCount": 10
  },
  {
-   "spotName": "Pleasure Point, Sewers",
+   "spotName": "Sewers",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -7,
    "timestampIn": 1583678100,
@@ -2576,7 +2576,7 @@
    "waveCount": 7
  },
  {
-   "spotName": "Pleasure Point, Sewers",
+   "spotName": "Sewers",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -7,
    "timestampIn": 1585835100,
@@ -2622,7 +2622,7 @@
    "waveCount": 7
  },
  {
-   "spotName": "Pleasure Point, Sewers",
+   "spotName": "Sewers",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -7,
    "timestampIn": 1587217200,
@@ -2645,7 +2645,7 @@
    "waveCount": 12
  },
  {
-   "spotName": "Waddell Creek, South Reefs",
+   "spotName": "Waddell, South Reefs",
    "surflineId": "5842041f4e65fad6a7708980",
    "spotUtcOffset": -7,
    "timestampIn": 1587390900,
@@ -2668,7 +2668,7 @@
    "waveCount": 9
  },
  {
-   "spotName": "Pleasure Point, Sewers",
+   "spotName": "Sewers",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -7,
    "timestampIn": 1587734700,
@@ -2691,7 +2691,7 @@
    "waveCount": 18
  },
  {
-   "spotName": "Pleasure Point, Rockview",
+   "spotName": "Rockview",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -7,
    "timestampIn": 1587820200,
@@ -2714,7 +2714,7 @@
    "waveCount": 12
  },
  {
-   "spotName": "Waddell Creek, South Reefs",
+   "spotName": "Waddell, South Reefs",
    "surflineId": "5842041f4e65fad6a7708980",
    "spotUtcOffset": -7,
    "timestampIn": 1588080300,
@@ -2737,7 +2737,7 @@
    "waveCount": 4
  },
  {
-   "spotName": "Pleasure Point, Rockview",
+   "spotName": "Rockview",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -7,
    "timestampIn": 1588251600,
@@ -2760,7 +2760,7 @@
    "waveCount": 15
  },
  {
-   "spotName": "Pleasure Point, Rockview",
+   "spotName": "Rockview",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -7,
    "timestampIn": 1588337400,
@@ -2783,7 +2783,7 @@
    "waveCount": 12
  },
  {
-   "spotName": "Pleasure Point, Sewers",
+   "spotName": "Sewers",
    "surflineId": "5842041f4e65fad6a7708807",
    "spotUtcOffset": -7,
    "timestampIn": 1589546400,
