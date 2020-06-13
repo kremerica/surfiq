@@ -34,9 +34,6 @@ def index(request):
                 tides = requests.get(tideUrl)
                 tideReport = json.loads(tides.text)
 
-                # print('SURF URL: ' + surfUrl)
-                # print('TIDE URL: ' + tideUrl)
-
                 # get the UTC offset from the surf report, use as timezone in surf session
                 surfUtcOffset = timezone(offset=timedelta(hours=surfReport['associated']['utcOffset']))
 
