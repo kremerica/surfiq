@@ -10,10 +10,14 @@ class AddSessionForm(forms.Form):
     SURFSPOT_CHOICES = [
         ('Santa Cruz County', (
                 ('Steamer Lane:5842041f4e65fad6a7708805', 'Steamer Lane'),
-                ('Pleasure Point:5842041f4e65fad6a7708807', 'Pleasure Point'),
+                ('Pleasure Point, First Peak:5842041f4e65fad6a7708807', 'Pleasure Point, First Peak'),
+                ('Pleasure Point, Second Peak:5842041f4e65fad6a7708807', 'Pleasure Point, Second Peak'),
+                ('Pleasure Point, Sewers:5842041f4e65fad6a7708807', 'Pleasure Point, Sewers'),
+                ('Pleasure Point, Rockview:5842041f4e65fad6a7708807', 'Pleasure Point, Rockview'),
                 ('The Hook:584204204e65fad6a7709996', 'The Hook'),
                 ('Four Mile:5842041f4e65fad6a7708981', 'Four Mile'),
-                ('Waddell Creek:5842041f4e65fad6a7708980', 'Waddell Creek'),
+                ('Waddell Creek, Middle:5842041f4e65fad6a7708980', 'Waddell Creek, Middle'),
+                ('Waddell Creek, South Reefs:5842041f4e65fad6a7708980', 'Waddell Creek, South Reefs'),
                 ('Scott Creek:5842041f4e65fad6a7708982', 'Scott Creek'),
                 ('26th Ave:5842041f4e65fad6a770898a', '26th Ave'),
                 ('Manresa:5842041f4e65fad6a770898e', 'Manresa'),
@@ -21,8 +25,10 @@ class AddSessionForm(forms.Form):
             ),
         ),
         ('San Francisco County', (
-                ('Ocean Beach SF:5842041f4e65fad6a77087f8', 'Ocean Beach SF'),
-            ),
+                ('Ocean Beach, Sloat:5842041f4e65fad6a77087f8', 'Ocean Beach, Sloat'),
+                ('Ocean Beach, Balboa:5842041f4e65fad6a77087f8', 'Ocean Beach, Balboa'),
+                ('Ocean Beach, Noriega:5842041f4e65fad6a77087f8', 'Ocean Beach, Noriega'),
+        ),
         ),
         ('San Mateo County', (
                 ('Linda Mar, Pacifica:5842041f4e65fad6a7708976', 'Linda Mar, Pacifica'),
