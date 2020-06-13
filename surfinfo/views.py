@@ -157,7 +157,7 @@ def historicalmatches(request):
     height = 2.3
     period = 14
     direction = 197
-    tide = 2.8
+    tide = 2.7
 
     heightFactor = 0.2
     periodFactor = 0.2
