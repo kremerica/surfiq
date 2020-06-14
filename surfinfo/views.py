@@ -1,6 +1,6 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-from django.db.models import Avg, Count, Sum
+from django.db.models import Avg, Count, Sum, Max
 
 from .models import Swell, Tide, SurfSession, SurfSpot
 import requests
