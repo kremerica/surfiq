@@ -8,5 +8,5 @@ urlpatterns = [
     path('newspotbro', views.requestnewspot, name='newspotbro'),
     path('thanksbro', views.spotthankyou, name='thanksbro'),
     path('databootstrap', views.databootstrap, name='databootstrap'),
-    path('whereto', views.historicalmatches, name='whereto'),
+    path('wheretobro', views.historicalmatches, name='whereto'),
 ]
