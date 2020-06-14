@@ -8,7 +8,7 @@ import json
 from datetime import datetime, timedelta, date, timezone
 import django.utils.timezone
 
-from .forms import AddSessionForm, AddSurfSpot
+from .forms import AddSessionForm, AddSurfSpot, GetMatchingSessions
 
 
 # adding a session
@@ -137,7 +137,9 @@ def requestnewspot(request):
 
 # thank the user for requesting a new surf spot
 def spotthankyou(request):
-    if request.GET['spotid']:
+    spotid = request.GET.get('spotid')
+
+    if spotid:
         if SurfSpot.objects.filter(id=request.GET['spotid']).exists():
             newSpot = SurfSpot.objects.get(id=request.GET['spotid'])
         else:
@@ -150,43 +152,66 @@ def spotthankyou(request):
 
 # find matching sessions for surf conditions
 def historicalmatches(request):
-    height = 2.8
-    period = 16
-    direction = 187
-    tide = 3
+    form = GetMatchingSessions()
 
-    heightFactor = 0.2
-    periodFactor = 0.2
-    directionFactor = 12
-    tideFactor = 1
+    # self-redirect with query string params
+    if form.is_valid():
+        # process the data
+        height = form.cleaned_data['swellHeight']
+        period = form.cleaned_data['swellPeriod']
+        direction = form.cleaned_data['swellDirection']
+        tide = form.cleaned_data['tideHeight']
+
+        # redirect to a thank you URL
+        return HttpResponseRedirect('whereto?height=' + str(height) +
+                                    '&period=' + str(period) +
+                                    '&direction=' + str(direction) +
+                                    '&tide=' + str(tide))
+
+
+    height = float(request.GET.get('swellHeight', 0))
+    period = float(request.GET.get('swellPeriod', 0))
+    direction = float(request.GET.get('swellDirection', 0))
+    tide = float(request.GET.get('tideHeight', 0))
+
+    HEIGHT_FACTOR = 0.2
+    PERIOD_FACTOR = 0.2
+    DIRECTION_FACTOR = 12
+    TIDE_FACTOR = 1
 
     # get a queryset of all sessions
-    sessions = SurfSession.objects.filter(swells__height__gte=height*(1-heightFactor),
-                                          swells__height__lte=height*(1+heightFactor),
-                                          swells__period__gte=period*(1-periodFactor),
-                                          swells__period__lte=period*(1+periodFactor),
-                                          swells__direction__gte=direction-directionFactor,
-                                          swells__direction__lte=direction+directionFactor,
-                                          tides__height__gte=tide-tideFactor,
-                                          tides__height__lte=tide+tideFactor).distinct()
+    rawSessions = SurfSession.objects.filter(swells__height__gte=height*(1-HEIGHT_FACTOR),
+                                          swells__height__lte=height*(1+HEIGHT_FACTOR),
+                                          swells__period__gte=period*(1-PERIOD_FACTOR),
+                                          swells__period__lte=period*(1+PERIOD_FACTOR),
+                                          swells__direction__gte=direction-DIRECTION_FACTOR,
+                                          swells__direction__lte=direction+DIRECTION_FACTOR,
+                                          tides__height__gte=tide-TIDE_FACTOR,
+                                          tides__height__lte=tide+TIDE_FACTOR).distinct()
 
     print()
+    print("*** CONDITIONS ***")
+    print("*** " + str(height) + "ft " + str(period) + "s at " + str(direction) + "°, tide height " + str(tide))
     print("*** PREVIOUS SURFS ***")
 
+    sessions = rawSessions.values("spotName").annotate(Avg("surfScore"), Avg("waveCount"), Count("id")).order_by('-id__count')
+
     if sessions.exists():
-        for each in sessions.values("spotName").annotate(Avg("surfScore"), Count("id")):
+        for each in sessions:
             print(str(each["spotName"]) + ": " +
                   str(each["id__count"]) + " sessions, avg score " +
-                  str(each["surfScore__avg"]) + "/5")
+                  str(round(each["surfScore__avg"], 1)) + "/5, avg wave count " +
+                  str(round(each["waveCount__avg"], 1)))
 
     print()
 
-#        for each in sessions:
-#            print(str(each.timeIn.astimezone(timezone(offset=timedelta(hours=int(each.spotUtcOffset)))))
-#                  + " at " + each.spotName + ", surf score: " + str(each.surfScore)
-#                  + "/5, wave count: " + str(each.waveCount))
-
-    return HttpResponse("testing bro")
+    return render(request, 'surfinfo/getmatchingsessions.html',
+                  {'form': form,
+                   'swellHeight': height,
+                   'swellPeriod': period,
+                   'swellDirection': direction,
+                   'tideHeight': tide,
+                   'sessions': sessions})
 
 
 # -----------------------------------------------------------------------------------

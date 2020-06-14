@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>I EAT SURF CONDITIONS</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'surfinfo/style.css' %}">
+</head>
+<body>
+    <div>
+        <h1 id="greeting">Tell me about that swell you want to surf...</h1>
+    </div>
+
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+    <form id="getmatchingsessions_form" action="" method="get">
+        {% csrf_token %}
+        <div>
+            <table>
+                {{ form.as_table }}
+            </table>
+        </div>
+        <div>
+            <input type="submit" value="Submit">
+        </div>
+    </form>
+    {% if swellHeight %}
+    <hr>
+    <div>
+        {% if sessions %}
+            <h2>{{ swellHeight }}ft, {{ swellPeriod }}s, {{ swellDirection }}°, {{ tideHeight }} tide</h2>
+            <h3>Matching sessions:</h3>
+                <ul>
+                    {% for each in sessions %}
+                        <li class="list_section_header">{{ each.spotName }}</li>
+                        <ul>
+                            <li>{{ each.id__count }} sessions</li>
+                            <li>Avg score: {{ each.surfScore__avg|floatformat:1 }}</li>
+                            <li>Avg wave count: {{ each.waveCount__avg|floatformat:1 }}</li>
+                        </ul>
+                    {% endfor %}
+                </ul>
+        {% else %}
+            <h3>No matching sessions bro</h3>
+        {% endif %}
+    </div>
+    {% endif %}
+</body>
+<script>
+    // set default field values for easier resubmit
+    document.getElementById("id_swellHeight").value = {{ swellHeight }};
+    document.getElementById("id_swellPeriod").value = {{ swellPeriod }};
+    document.getElementById("id_swellDirection").value = {{ swellDirection }};
+    document.getElementById("id_tideHeight").value = {{ tideHeight }};
+</script>
+</html>
