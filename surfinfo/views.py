@@ -152,6 +152,11 @@ def spotthankyou(request):
 
 # find matching sessions for surf conditions
 def historicalmatches(request):
+    height_factor = 0.25
+    period_factor = 1
+    direction_factor = 10
+    tide_factor = 0.5
+
     form = GetMatchingSessions()
 
     # self-redirect with query string params
@@ -168,42 +173,37 @@ def historicalmatches(request):
                                     '&direction=' + str(direction) +
                                     '&tide=' + str(tide))
 
-
     height = float(request.GET.get('swellHeight', 0))
     period = float(request.GET.get('swellPeriod', 0))
     direction = float(request.GET.get('swellDirection', 0))
     tide = float(request.GET.get('tideHeight', 0))
 
-    HEIGHT_FACTOR = 0.2
-    PERIOD_FACTOR = 0.2
-    DIRECTION_FACTOR = 12
-    TIDE_FACTOR = 1
-
     # get a queryset of all sessions
-    rawSessions = SurfSession.objects.filter(swells__height__gte=height*(1-HEIGHT_FACTOR),
-                                          swells__height__lte=height*(1+HEIGHT_FACTOR),
-                                          swells__period__gte=period*(1-PERIOD_FACTOR),
-                                          swells__period__lte=period*(1+PERIOD_FACTOR),
-                                          swells__direction__gte=direction-DIRECTION_FACTOR,
-                                          swells__direction__lte=direction+DIRECTION_FACTOR,
-                                          tides__height__gte=tide-TIDE_FACTOR,
-                                          tides__height__lte=tide+TIDE_FACTOR).distinct()
+    rawSessions = SurfSession.objects.filter(swells__height__gte=height - height_factor,
+                                             swells__height__lte=height + height_factor,
+                                             swells__period__gte=period - period_factor,
+                                             swells__period__lte=period + period_factor,
+                                             swells__direction__gte=direction - direction_factor,
+                                             swells__direction__lte=direction + direction_factor,
+                                             tides__height__gte=tide - tide_factor,
+                                             tides__height__lte=tide + tide_factor).distinct()
 
-    print()
-    print("*** CONDITIONS ***")
-    print("*** " + str(height) + "ft " + str(period) + "s at " + str(direction) + "°, tide height " + str(tide))
-    print("*** PREVIOUS SURFS ***")
+    #    print()
+    #    print("*** CONDITIONS ***")
+    #    print("*** " + str(height) + "ft " + str(period) + "s at " + str(direction) + "°, tide height " + str(tide))
+    #    print("*** PREVIOUS SURFS ***")
 
-    sessions = rawSessions.values("spotName").annotate(Avg("surfScore"), Avg("waveCount"), Count("id")).order_by('-surfScore__avg')
+    sessions = rawSessions.values("spotName").annotate(Avg("surfScore"), Avg("waveCount"), Count("id")).order_by(
+        '-id__count')
 
-    if sessions.exists():
-        for each in sessions:
-            print(str(each["spotName"]) + ": " +
-                  str(each["id__count"]) + " sessions, avg score " +
-                  str(round(each["surfScore__avg"], 1)) + "/5, avg wave count " +
-                  str(round(each["waveCount__avg"], 1)))
-
-    print()
+    #    if sessions.exists():
+    #        for each in sessions:
+    #            print(str(each["spotName"]) + ": " +
+    #                  str(each["id__count"]) + " sessions, avg score " +
+    #                  str(round(each["surfScore__avg"], 1)) + "/5, avg wave count " +
+    #                  str(round(each["waveCount__avg"], 1)))
+    #
+    #    print()
 
     return render(request, 'surfinfo/getmatchingsessions.html',
                   {'form': form,

@@ -15,7 +15,6 @@
     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
     <form id="getmatchingsessions_form" action="" method="get">
-        {% csrf_token %}
         <div>
             <table>
                 {{ form.as_table }}
@@ -29,7 +28,8 @@
     <hr>
     <div>
         {% if sessions %}
-            <h2>{{ swellHeight }}ft, {{ swellPeriod }}s, {{ swellDirection }}°, {{ tideHeight }} tide</h2>
+        <h2>{{ swellHeight }}ft at {{ swellPeriod }}s, {{ swellDirection }}°</h2>
+        <h2>{{ tideHeight }}ft tide</h2>
             <h3>Matching sessions:</h3>
                 <ul>
                     {% for each in sessions %}
