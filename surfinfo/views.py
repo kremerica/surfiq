@@ -194,7 +194,7 @@ def historicalmatches(request):
     print("*** " + str(height) + "ft " + str(period) + "s at " + str(direction) + "°, tide height " + str(tide))
     print("*** PREVIOUS SURFS ***")
 
-    sessions = rawSessions.values("spotName").annotate(Avg("surfScore"), Avg("waveCount"), Count("id")).order_by('-id__count')
+    sessions = rawSessions.values("spotName").annotate(Avg("surfScore"), Avg("waveCount"), Count("id")).order_by('-surfScore__avg')
 
     if sessions.exists():
         for each in sessions:
