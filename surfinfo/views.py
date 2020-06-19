@@ -138,7 +138,7 @@ def session_matches_time_and_place(request):
     SantaCruzCountyId = '58581a836630e24c44879011'
     SanFranciscoCountyId = '58581a836630e24c44879010'
 
-    surfDatetime = datetime.now()
+    surfDatetime = datetime.now(tz=timezone(offset=timedelta(hours=-7)))
 
     swells = Swell.getSurflineSwells(surflineId=SantaCruzCountyId, subregionFlag=True, surfDatetime=surfDatetime)
 

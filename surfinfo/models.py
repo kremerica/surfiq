@@ -34,12 +34,7 @@ class Swell(models.Model):
         # get the UTC offset from the surf report, use as timezone in surf session
         surfUtcOffset = timezone(offset=timedelta(hours=surfReport['associated']['utcOffset']))
 
-        print("naive datetime: " + str(surfDatetime) + str(surfDatetime.tzinfo))
-
-        # set the timezone of the datetime object to the surfline reported timezone offset
-        surfDatetime = make_aware(surfDatetime, timezone=surfUtcOffset)
-
-        print("aware datetime: " + str(surfDatetime) + str(surfDatetime.tzinfo))
+        print("datetime: " + str(surfDatetime) + str(surfDatetime.tzinfo))
 
         # find the "hour index" that maps to the hour we want swell info for
         startHourIndex = surfDatetime.hour
