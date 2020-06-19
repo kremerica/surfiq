@@ -97,7 +97,7 @@ def spotthankyou(request):
 
 
 # find matching sessions for surf conditions
-def historicalmatches(request):
+def session_matches_conditions(request):
     form = GetMatchingSessions()
 
     # self-redirect with query string params
@@ -131,6 +131,20 @@ def historicalmatches(request):
                    'swellDirection': direction,
                    'tideHeight': tide,
                    'sessions': sessions})
+
+
+# find matching sessions for conditions at a given time and region
+def session_matches_time_and_place(request):
+    SantaCruzCountyId = '58581a836630e24c44879011'
+    SanFranciscoCountyId = '58581a836630e24c44879010'
+
+    surfDatetime = datetime.now()
+
+    swells = Swell.getSurflineSwells(surflineId=SantaCruzCountyId, subregionFlag=True, surfDatetime=surfDatetime)
+
+    print(swells)
+
+    return HttpResponse(swells)
 
 
 # -----------------------------------------------------------------------------------

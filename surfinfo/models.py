@@ -3,6 +3,7 @@ import json
 
 from django.db import models
 from django.db.models import Avg, Count, Sum, Max
+from django.utils.timezone import make_aware
 
 from datetime import datetime, timedelta, timezone
 
@@ -18,6 +19,38 @@ class Swell(models.Model):
     def __str__(self):
         return 'height: ' + str(self.height) + ', period: ' + str(self.period) + ', direction: ' + str(self.direction)
 
+    @classmethod
+    def getSurflineSwells(cls, surflineId, subregionFlag, surfDatetime):
+        swells = []
+
+        if subregionFlag:
+            surfUrl = 'https://services.surfline.com/kbyg/regions/forecasts/wave?subregionId=' + surflineId + '&days=1&intervalHours=1&maxHeights=false'
+        else:
+            surfUrl = 'https://services.surfline.com/kbyg/spots/forecasts/wave?spotId=' + surflineId + '&days=1&intervalHours=1&maxHeights=false'
+
+        surf = requests.get(surfUrl)
+        surfReport = json.loads(surf.text)
+
+        # get the UTC offset from the surf report, use as timezone in surf session
+        surfUtcOffset = timezone(offset=timedelta(hours=surfReport['associated']['utcOffset']))
+
+        print("naive datetime: " + str(surfDatetime) + str(surfDatetime.tzinfo))
+
+        # set the timezone of the datetime object to the surfline reported timezone offset
+        surfDatetime = make_aware(surfDatetime, timezone=surfUtcOffset)
+
+        print("aware datetime: " + str(surfDatetime) + str(surfDatetime.tzinfo))
+
+        # find the "hour index" that maps to the hour we want swell info for
+        startHourIndex = surfDatetime.hour
+
+        # extract all swells for that hour, DO NOT SAVE TO DB
+        for each in surfReport['data']['wave'][startHourIndex]['swells']:
+            # plop all non-zero-height swells into Swell objects, save to DB, add to surf session
+            if each['height'] != 0:
+                swells.append(Swell(height=each['height'], period=each['period'], direction=each['direction']))
+
+        return swells
 
 class Tide(models.Model):
     timestamp = models.DateTimeField()
