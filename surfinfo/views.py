@@ -127,10 +127,12 @@ def session_matches_time_and_place(request):
     surfRegion = request.GET.get('surfRegion', None)
 
     form = SessionMatchesTimeAndPlace()
+    displayDatetime = None
     swells = None
 
     if surfDatetime is not None and surfRegion is not None:
         surfDatetime = datetime.strptime(surfDatetime, '%Y-%m-%dT%H:%M')
+        displayDatetime = surfDatetime.strftime('%Y-%m-%dT%H:%M')
 
         swells = Swell.getSurflineSwells(surflineId=surfRegion,
                                          subregionFlag=True,
@@ -140,7 +142,7 @@ def session_matches_time_and_place(request):
 
     return render(request, 'surfinfo/getswells.html',
                   {'form': form,
-                   'surfDatetime': surfDatetime.strftime('%Y-%m-%dT%H:%M'),
+                   'surfDatetime': displayDatetime,
                    'surfRegion': surfRegion,
                    'swells': swells})
 
