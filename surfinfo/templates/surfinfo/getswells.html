@@ -27,15 +27,13 @@
     {% if surfDatetime %}
     <hr>
     <div>
-        <h2>{{ surfDatetime }}</h2>
-        <h3>{{ surfRegion }}</h3>
-        <h3>Swells</h3>
+        <h2>Swells</h2>
             <ul>
-                {% for each in sessions %}
+                {% for each in swells %}
                     <li class="list_section_header">Swell {{ forloop.counter }}</li>
                     <ul>
-                        <li>SWELL INFO</li>
-                        <li>SWELL POWER</li>
+                        <li>{{ each.height }}ft at {{ each.period }} sec, {{ each.direction }}°</li>
+                        <li>{{ each.power }} kW/m</li>
                     </ul>
                 {% endfor %}
             </ul>
@@ -44,7 +42,7 @@
 </body>
 <script>
     // set default field values for easier resubmit
-    document.getElementById("id_swellHeight").value = {{ swellHeight }};
-    document.getElementById("id_swellPeriod").value = {{ swellPeriod }};
+    document.getElementById("id_surfDatetime").value = "{{ surfDatetime }}";
+    document.getElementById("id_surfRegion").value = "{{ surfRegion }}";
 </script>
 </html>

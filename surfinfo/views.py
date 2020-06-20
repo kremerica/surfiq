@@ -123,15 +123,26 @@ def session_matches_conditions(request):
 
 # find matching sessions for conditions at a given time and region
 def session_matches_time_and_place(request):
-    surfDatetime = request.GET.get('surfDatetime', 0)
-    surfRegion = request.GET.get('surfRegion', 0)
+    surfDatetime = request.GET.get('surfDatetime', None)
+    surfRegion = request.GET.get('surfRegion', None)
 
     form = SessionMatchesTimeAndPlace()
+    swells = None
+
+    if surfDatetime is not None and surfRegion is not None:
+        surfDatetime = datetime.strptime(surfDatetime, '%Y-%m-%dT%H:%M')
+
+        swells = Swell.getSurflineSwells(surflineId=surfRegion,
+                                         subregionFlag=True,
+                                         surfDatetime=surfDatetime)
+
+        swells.sort(key=lambda x: x.power, reverse=True)
 
     return render(request, 'surfinfo/getswells.html',
                   {'form': form,
-                   'surfDatetime': surfDatetime,
-                   'surfRegion': surfRegion})
+                   'surfDatetime': surfDatetime.strftime('%Y-%m-%dT%H:%M'),
+                   'surfRegion': surfRegion,
+                   'swells': swells})
 
 # -----------------------------------------------------------------------------------
 # bootstrap DB with historical data

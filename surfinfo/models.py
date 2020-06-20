@@ -99,7 +99,7 @@ class Swell(models.Model):
             if each['height'] != 0:
                 swells.append(Swell(height=each['height'], period=each['period'], direction=each['direction']))
 
-        return swells
+        return list(swells)
 
 class Tide(models.Model):
     timestamp = models.DateTimeField()
