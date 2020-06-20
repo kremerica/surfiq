@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>YOU WANT SOME SWELLS?</title>
+    <title>FEED ME SPACETIME COORDINATES</title>
     <link rel="stylesheet" type="text/css" href="{% static 'surfinfo/style.css' %}">
 </head>
 <body>
     <div>
-        <h1>Let's get some fookin swells</h1>
+        <h1 id="greeting">Where and when?</h1>
     </div>
 
     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
@@ -24,5 +24,27 @@
             <input type="submit" value="Submit">
         </div>
     </form>
+    {% if surfDatetime %}
+    <hr>
+    <div>
+        <h2>{{ surfDatetime }}</h2>
+        <h3>{{ surfRegion }}</h3>
+        <h3>Swells</h3>
+            <ul>
+                {% for each in sessions %}
+                    <li class="list_section_header">Swell {{ forloop.counter }}</li>
+                    <ul>
+                        <li>SWELL INFO</li>
+                        <li>SWELL POWER</li>
+                    </ul>
+                {% endfor %}
+            </ul>
+    </div>
+    {% endif %}
 </body>
+<script>
+    // set default field values for easier resubmit
+    document.getElementById("id_swellHeight").value = {{ swellHeight }};
+    document.getElementById("id_swellPeriod").value = {{ swellPeriod }};
+</script>
 </html>

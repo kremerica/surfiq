@@ -247,7 +247,7 @@ class SurfSession(models.Model):
         #
         #    print()
 
-        return sessions
+        return list(sessions)
 
 
     # bootstrap DB with historical data in surfinfo/surfdatabootstrap

@@ -100,20 +100,6 @@ def spotthankyou(request):
 def session_matches_conditions(request):
     form = SessionMatchesConditions()
 
-    # self-redirect with query string params
-    if form.is_valid():
-        # package up query params
-        height = form.cleaned_data['swellHeight']
-        period = form.cleaned_data['swellPeriod']
-        direction = form.cleaned_data['swellDirection']
-        tide = form.cleaned_data['tideHeight']
-
-        # redirect to self, use the right params
-        return HttpResponseRedirect('whereto?height=' + str(height) +
-                                    '&period=' + str(period) +
-                                    '&direction=' + str(direction) +
-                                    '&tide=' + str(tide))
-
     tide = request.GET.get('tideHeight', 0)
 
     swell = Swell(height=request.GET.get('swellHeight', 0),
@@ -137,9 +123,15 @@ def session_matches_conditions(request):
 
 # find matching sessions for conditions at a given time and region
 def session_matches_time_and_place(request):
-    #TODO gonna need to start this one over broh
+    surfDatetime = request.GET.get('surfDatetime', 0)
+    surfRegion = request.GET.get('surfRegion', 0)
 
-    return HttpResponse("not yet")
+    form = SessionMatchesTimeAndPlace()
+
+    return render(request, 'surfinfo/getswells.html',
+                  {'form': form,
+                   'surfDatetime': surfDatetime,
+                   'surfRegion': surfRegion})
 
 # -----------------------------------------------------------------------------------
 # bootstrap DB with historical data
