@@ -114,21 +114,23 @@ def session_matches_conditions(request):
                                     '&direction=' + str(direction) +
                                     '&tide=' + str(tide))
 
-    height = request.GET.get('swellHeight', 0)
-    period = request.GET.get('swellPeriod', 0)
-    direction = request.GET.get('swellDirection', 0)
     tide = request.GET.get('tideHeight', 0)
 
-    sessions = SurfSession.getMatchingSessions(swellHeight=height,
-                                               swellPeriod=period,
-                                               swellDirection=direction,
+    swell = Swell(height=request.GET.get('swellHeight', 0),
+                  period=request.GET.get('swellPeriod', 0),
+                  direction=request.GET.get('swellDirection', 0))
+
+    sessions = SurfSession.getMatchingSessions(swellHeight=swell.height,
+                                               swellPeriod=swell.period,
+                                               swellDirection=swell.direction,
                                                tideHeight=tide)
 
     return render(request, 'surfinfo/getmatchingsessions.html',
                   {'form': form,
-                   'swellHeight': height,
-                   'swellPeriod': period,
-                   'swellDirection': direction,
+                   'swellHeight': swell.height,
+                   'swellPeriod': swell.period,
+                   'swellDirection': swell.direction,
+                   'swellPower': swell.power,
                    'tideHeight': tide,
                    'sessions': sessions})
 

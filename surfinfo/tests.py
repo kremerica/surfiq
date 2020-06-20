@@ -13,8 +13,7 @@ class SurfSessionModelTests(TestCase):
     # make sure this is the first test to write Swell, Tide, or SurfSession objects to DB
     def test_data_bootstrap(self):
         """
-        test_data_bootstrap() returns True if first bootstrap call succeeds, spot check for a surf session
-        verifies correctness, and then second call to bootstrap exits without bootstrapping
+        verifies boostrapped surf data is sane and bootstrapping is idempotent
         :return:
         """
 
@@ -41,9 +40,32 @@ class SurfSessionModelTests(TestCase):
         # recount surf sessions, make sure the number hasn't changed
         self.assertEqual(SurfSession.objects.all().count(), 123, msg="Second bootstrap call added stuff")
 
+    def test_swell_comparisons(self):
+        """
+        test swell comparisons (==, <, <=, >, >=)
+        :return:
+        """
+        swell1 = Swell(height=2.2,
+                       period=15,
+                       direction=215)
+
+        swell2 = Swell(height=2.1,
+                       period=12,
+                       direction=295)
+
+        self.assertEqual(swell1.power, 3.4)
+        self.assertEqual(swell2.power, 2.5)
+
+        self.assertNotEqual(swell1, swell2)
+        self.assertGreater(swell1, swell2)
+        self.assertGreaterEqual(swell1, swell1)
+        self.assertLess(swell2, swell1)
+        self.assertLessEqual(swell2, swell2)
+        self.assertEqual(swell1, swell1)
+
     def test_get_surfline_swells(self):
         """
-        test_get_surfline_swells() returns True if the Swell.getSurflineSwells() function doesn't implode
+        smoke test for getting spot and region swells from Surfline
         :return:
         """
 
@@ -60,8 +82,7 @@ class SurfSessionModelTests(TestCase):
 
     def test_add_surf_session(self):
         """
-        test_add_surf_session() returns True if a session can be successfully added to DB, False otherwise,
-        using Steamer Lane as the test spot
+        tests that a session can be added from Surfline
         :param self:
         :return:
         """

@@ -16,8 +16,61 @@ class Swell(models.Model):
     period = models.DecimalField(max_digits=4, decimal_places=2)
     direction = models.DecimalField(max_digits=5, decimal_places=2)
 
+    @property
+    def power(self):
+        """
+        calculates the power of a swell, useful for comparisons
+        :return:
+            kilowatt of power per meter of wave (width, not height)
+        """
+
+        FEET_IN_METER = 3.28084
+
+        # wave power equation, more info at https://en.wikipedia.org/wiki/Wave_power
+        return round(0.5 * ((float(self.height) / FEET_IN_METER)**2) * float(self.period), 1)
+
+    def __lt__(self, other):
+        """
+        compares swell power
+        :param other:
+        :return:
+        """
+        return self.power < other.power
+
+    def __le__(self, other):
+        """
+        compares swell power
+        :param other:
+        :return:
+        """
+        return self.power <= other.power
+
+    def __gt__(self, other):
+        """
+        compares swell power
+        :param other:
+        :return:
+        """
+        return self.power > other.power
+
+    def __ge__(self, other):
+        """
+        compares swell power
+        :param other:
+        :return:
+        """
+        return self.power >= other.power
+
+    def __eq__(self, other):
+        """
+        compares swell power and returns True if equal
+        :param other:
+        :return:
+        """
+        return self.power == other.power
+
     def __str__(self):
-        return 'height: ' + str(self.height) + ', period: ' + str(self.period) + ', direction: ' + str(self.direction)
+        return 'height: ' + str(self.height) + ', period: ' + str(self.period) + ', direction: ' + str(self.direction) + ', power: ' + str(self.power)
 
     @classmethod
     def getSurflineSwells(cls, surflineId, subregionFlag, surfDatetime):

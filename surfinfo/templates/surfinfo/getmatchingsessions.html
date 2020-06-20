@@ -9,7 +9,7 @@
 </head>
 <body>
     <div>
-        <h1 id="greeting">Tell me about that swell you want to surf...</h1>
+        <h1 id="greeting">Feed me swell info</h1>
     </div>
 
     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
@@ -27,22 +27,23 @@
     {% if swellHeight %}
     <hr>
     <div>
-        {% if sessions %}
         <h2>{{ swellHeight }}ft at {{ swellPeriod }}s, {{ swellDirection }}°</h2>
         <h2>{{ tideHeight }}ft tide</h2>
-            <h3>Matching sessions:</h3>
-                <ul>
-                    {% for each in sessions %}
-                        <li class="list_section_header">{{ each.spotName }}</li>
-                        <ul>
-                            <li>{{ each.id__count }} sessions</li>
-                            <li>Avg score: {{ each.surfScore__avg|floatformat:1 }}</li>
-                            <li>Avg wave count: {{ each.waveCount__avg|floatformat:1 }}</li>
-                        </ul>
-                    {% endfor %}
-                </ul>
+        <h3>Swell power: {{ swellPower }} kW/m</h3>
+        {% if sessions %}
+        <h3>Matching sessions:</h3>
+            <ul>
+                {% for each in sessions %}
+                    <li class="list_section_header">{{ each.spotName }}</li>
+                    <ul>
+                        <li>{{ each.id__count }} sessions</li>
+                        <li>Avg score: {{ each.surfScore__avg|floatformat:1 }}</li>
+                        <li>Avg wave count: {{ each.waveCount__avg|floatformat:1 }}</li>
+                    </ul>
+                {% endfor %}
+            </ul>
         {% else %}
-            <h3>No matching sessions bro</h3>
+        <h3>No matching sessions bro</h3>
         {% endif %}
     </div>
     {% endif %}
