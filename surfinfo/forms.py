@@ -1,8 +1,12 @@
 from django import forms
-
+from datetime import datetime
 
 class TimeInput(forms.TimeInput):
     input_type = "time"
+
+
+class DatetimeInput(forms.DateTimeInput):
+    input_type = "datetime-local"
 
 
 class AddSessionForm(forms.Form):
@@ -78,7 +82,7 @@ class AddSurfSpot(forms.Form):
     spotName = forms.CharField(label="Spot name")
 
 
-class GetMatchingSessions(forms.Form):
+class SessionMatchesConditions(forms.Form):
     #    SURFREGION_CHOICES = (
     #        ("Santa Cruz County", "Santa Cruz County"),
     #        ("San Mateo County", "San Mateo County"),
@@ -108,3 +112,18 @@ class GetMatchingSessions(forms.Form):
 
         if swellDirection < 0 or swellDirection > 360:
             self.add_error("swellDirection", "Swell direction must be between 0 and 360")
+
+
+class SessionMatchesTimeAndPlace(forms.Form):
+    SURFREGION_CHOICES = (
+        ("58581a836630e24c44879011", "Santa Cruz County"),
+        ("5cc73566c30e4c0001096989", "San Mateo County"),
+        ("58581a836630e24c44879010", "San Francisco County"),
+    )
+
+    # time + location based match
+    surfDatetime = forms.DateTimeField(label="When?", required=True, widget=DatetimeInput)
+    surfRegion = forms.ChoiceField(label="Where?", choices=SURFREGION_CHOICES, initial=1)
+
+    def clean(self):
+        surfDatetime = self.cleaned_data["surfDatetime"]

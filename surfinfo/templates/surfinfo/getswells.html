@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>YOU WANT SOME SWELLS?</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'surfinfo/style.css' %}">
+</head>
+<body>
+    <div>
+        <h1>Let's get some fookin swells</h1>
+    </div>
+
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+    <form action="" method="get">
+        <div>
+            <table>
+                {{ form.as_table }}
+            </table>
+        </div>
+        <div>
+            <input type="submit" value="Submit">
+        </div>
+    </form>
+</body>
+</html>

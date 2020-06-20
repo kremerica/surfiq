@@ -4,7 +4,7 @@ from django.shortcuts import render
 from .models import Swell, Tide, SurfSession, SurfSpot
 from datetime import datetime, timedelta, date, timezone
 
-from .forms import AddSessionForm, AddSurfSpot, GetMatchingSessions
+from .forms import AddSessionForm, AddSurfSpot, SessionMatchesConditions, SessionMatchesTimeAndPlace
 
 
 # adding a session
@@ -98,7 +98,7 @@ def spotthankyou(request):
 
 # find matching sessions for surf conditions
 def session_matches_conditions(request):
-    form = GetMatchingSessions()
+    form = SessionMatchesConditions()
 
     # self-redirect with query string params
     if form.is_valid():
@@ -135,17 +135,9 @@ def session_matches_conditions(request):
 
 # find matching sessions for conditions at a given time and region
 def session_matches_time_and_place(request):
-    SantaCruzCountyId = '58581a836630e24c44879011'
-    SanFranciscoCountyId = '58581a836630e24c44879010'
+    #TODO gonna need to start this one over broh
 
-    surfDatetime = datetime.now(tz=timezone(offset=timedelta(hours=-7)))
-
-    swells = Swell.getSurflineSwells(surflineId=SantaCruzCountyId, subregionFlag=True, surfDatetime=surfDatetime)
-
-    print(swells)
-
-    return HttpResponse(swells)
-
+    return HttpResponse("not yet")
 
 # -----------------------------------------------------------------------------------
 # bootstrap DB with historical data

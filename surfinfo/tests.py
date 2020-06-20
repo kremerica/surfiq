@@ -41,6 +41,23 @@ class SurfSessionModelTests(TestCase):
         # recount surf sessions, make sure the number hasn't changed
         self.assertEqual(SurfSession.objects.all().count(), 123, msg="Second bootstrap call added stuff")
 
+    def test_get_surfline_swells(self):
+        """
+        test_get_surfline_swells() returns True if the Swell.getSurflineSwells() function doesn't implode
+        :return:
+        """
+
+        right_now = datetime.now()
+
+        # get swells for Steamer's
+        spotSwells = Swell.getSurflineSwells(surflineId="5842041f4e65fad6a7708805", subregionFlag=False, surfDatetime=right_now)
+
+        # get swells for Santa Cruz County
+        regionSwells = Swell.getSurflineSwells(surflineId="58581a836630e24c44879011", subregionFlag=True, surfDatetime=right_now)
+
+        self.assertGreater(len(spotSwells), 0)
+        self.assertGreater(len(regionSwells), 0)
+
     def test_add_surf_session(self):
         """
         test_add_surf_session() returns True if a session can be successfully added to DB, False otherwise,

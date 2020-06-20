@@ -32,9 +32,10 @@ class Swell(models.Model):
         surfReport = json.loads(surf.text)
 
         # get the UTC offset from the surf report, use as timezone in surf session
+        # TODO use this to sanity check input datetime
         surfUtcOffset = timezone(offset=timedelta(hours=surfReport['associated']['utcOffset']))
 
-        print("datetime: " + str(surfDatetime) + str(surfDatetime.tzinfo))
+        # print("datetime: " + str(surfDatetime))
 
         # find the "hour index" that maps to the hour we want swell info for
         startHourIndex = surfDatetime.hour
