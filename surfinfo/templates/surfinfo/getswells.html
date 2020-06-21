@@ -28,20 +28,20 @@
     <hr>
     <div>
         <h2>Tide: {{ tide.height|floatformat:1 }} ft</h2>
-        <h2>Swells</h2>
+        <h2>Surfable swells</h2>
+            {% for each in swells %}
             <ul>
-                {% for each in swells %}
-                    <li class="list_section_header">Swell {{ forloop.counter }}
-                        {% if each.power <= junk_threshold %}
-                            <span class="annotation">JUNK SWELL</span>
-                        {% endif %}
-                    </li>
-                    <ul>
-                        <li>{{ each.height|floatformat:1 }}ft at {{ each.period|floatformat:0 }} sec, {{ each.direction|floatformat:0 }}° ({{ each.power }} kW/m)</li>
-                        <li><a class="web_link" href="wheretobro?swellHeight={{ each.height|floatformat:1 }}&swellPeriod={{ each.period|floatformat:0 }}&swellDirection={{ each.direction|floatformat:0 }}&tideHeight={{ tide.height|floatformat:1 }}">Previous surfs with similar swell</a></li>
-                    </ul>
-                {% endfor %}
+                {% if each.power > junk_threshold %}
+                    <li class="list_section_header">Swell {{ forloop.counter }}</li>
+                {% else %}
+                    <li class="list_section_header">Junk swell</li>
+                {% endif %}
+                <ul>
+                    <li>{{ each.height|floatformat:1 }}ft at {{ each.period|floatformat:0 }} sec, {{ each.direction|floatformat:0 }}° ({{ each.power }} kW/m)</li>
+                    <li><a class="web_link" href="wheretobro?swellHeight={{ each.height|floatformat:1 }}&swellPeriod={{ each.period|floatformat:0 }}&swellDirection={{ each.direction|floatformat:0 }}&tideHeight={{ tide.height|floatformat:1 }}">Previous surfs with similar swell</a></li>
+                </ul>
             </ul>
+            {% endfor %}
 
     </div>
     {% endif %}

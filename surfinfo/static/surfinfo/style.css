@@ -39,7 +39,7 @@ input, select, option {
     color: black;
     font-size: 1.05em;
 }
-input[type=submit] {
+input[type=submit], .primary_button {
     margin-top: 15px;
     font-size: 1.5em;
     font-family: var(--header_font);
@@ -51,8 +51,10 @@ input[type=submit] {
     padding-left: 2em;
     padding-right: 2em;
 
+    text-decoration: none;
     -webkit-appearance: none;
 }
+
 .errorlist {
     list-style-type: none;
     color: var(--error_color);

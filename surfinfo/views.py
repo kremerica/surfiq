@@ -9,6 +9,10 @@ from .forms import AddSessionForm, AddSurfSpot, SessionMatchesConditions, Sessio
 
 # adding a session
 def index(request):
+    return render(request, 'surfinfo/index.html')
+
+# adding a session
+def addsession(request):
     # if this is a POST request, process form data
     if request.method == 'POST':
         form = AddSessionForm(request.POST)
@@ -44,7 +48,6 @@ def index(request):
         form = AddSessionForm()
 
     return render(request, 'surfinfo/sessionform.html', {'form': form})
-
 
 # thank you for adding a session
 def sessionthankyou(request):

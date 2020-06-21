@@ -213,7 +213,7 @@ class SurfSession(models.Model):
         height_factor = 0.25
         period_factor = 1
         direction_factor = 10
-        tide_factor = 0.5
+        tide_factor = 0.75
 
         height = float(swellHeight)
         period = float(swellPeriod)
