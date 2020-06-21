@@ -132,8 +132,8 @@ def session_matches_time_and_place(request):
 
     form = SessionMatchesTimeAndPlace()
     displayDatetime = None
-    swells = None
-    tide = None
+    swells = []
+    tide = []
 
     if surfDatetime is not None and surfRegion is not None:
         surfDatetime = datetime.strptime(surfDatetime, '%Y-%m-%dT%H:%M')
@@ -152,7 +152,7 @@ def session_matches_time_and_place(request):
                    'surfDatetime': displayDatetime,
                    'surfRegion': surfRegion,
                    'swells': swells,
-                   'tide': tide[0]})
+                   'tide': next(iter(tide), None)})
 
 
 # -----------------------------------------------------------------------------------
