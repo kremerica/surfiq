@@ -3,10 +3,8 @@ import json
 
 from django.db import models
 from django.db.models import Avg, Count, Sum, Max
-from django.utils.timezone import make_aware
 
 from datetime import datetime, timedelta, timezone
-
 
 
 # Create your models here.
@@ -18,59 +16,29 @@ class Swell(models.Model):
 
     @property
     def power(self):
-        """
-        calculates the power of a swell, useful for comparisons
-        :return:
-            kilowatt of power per meter of wave (width, not height)
-        """
-
-        FEET_IN_METER = 3.28084
+        METER_TO_FOOT_CONVERSION = 3.28084
 
         # wave power equation, more info at https://en.wikipedia.org/wiki/Wave_power
-        return round(0.5 * ((float(self.height) / FEET_IN_METER)**2) * float(self.period), 1)
+        return round(0.5 * ((float(self.height) / METER_TO_FOOT_CONVERSION) ** 2) * float(self.period), 1)
 
     def __lt__(self, other):
-        """
-        compares swell power
-        :param other:
-        :return:
-        """
         return self.power < other.power
 
     def __le__(self, other):
-        """
-        compares swell power
-        :param other:
-        :return:
-        """
         return self.power <= other.power
 
     def __gt__(self, other):
-        """
-        compares swell power
-        :param other:
-        :return:
-        """
         return self.power > other.power
 
     def __ge__(self, other):
-        """
-        compares swell power
-        :param other:
-        :return:
-        """
         return self.power >= other.power
 
     def __eq__(self, other):
-        """
-        compares swell power and returns True if equal
-        :param other:
-        :return:
-        """
         return self.power == other.power
 
     def __str__(self):
-        return 'height: ' + str(self.height) + ', period: ' + str(self.period) + ', direction: ' + str(self.direction) + ', power: ' + str(self.power)
+        return 'height: ' + str(self.height) + ', period: ' + str(self.period) + ', direction: ' + str(
+            self.direction) + ', power: ' + str(self.power)
 
     @classmethod
     def getSurflineSwells(cls, surflineId, subregionFlag, surfDatetime):
@@ -84,22 +52,22 @@ class Swell(models.Model):
         surf = requests.get(surfUrl)
         surfReport = json.loads(surf.text)
 
-        # get the UTC offset from the surf report, use as timezone in surf session
-        # TODO use this to sanity check input datetime
+        # print("datetime: " + str(surfDatetime))
         surfUtcOffset = timezone(offset=timedelta(hours=surfReport['associated']['utcOffset']))
 
-        # print("datetime: " + str(surfDatetime))
+        # extract all swells for that hour, DOES NOT SAVE TO DB
+        for timeblock in surfReport['data']['wave']:
+            timeblockDatetime = datetime.fromtimestamp(timeblock['timestamp'], tz=surfUtcOffset)
 
-        # find the "hour index" that maps to the hour we want swell info for
-        startHourIndex = surfDatetime.hour
-
-        # extract all swells for that hour, DO NOT SAVE TO DB
-        for each in surfReport['data']['wave'][startHourIndex]['swells']:
-            # plop all non-zero-height swells into Swell objects, save to DB, add to surf session
-            if each['height'] != 0:
-                swells.append(Swell(height=each['height'], period=each['period'], direction=each['direction']))
+            if timeblockDatetime.hour == surfDatetime.hour:
+                print(timeblockDatetime.hour)
+                for each in timeblock['swells']:
+                    # plop all non-zero-height swells into Swell objects, save to DB, add to surf session
+                    if each['height'] != 0:
+                        swells.append(Swell(height=each['height'], period=each['period'], direction=each['direction']))
 
         return list(swells)
+
 
 class Tide(models.Model):
     timestamp = models.DateTimeField()
@@ -109,10 +77,12 @@ class Tide(models.Model):
     def __str__(self):
         return str(self.timestamp) + ': ' + str(self.height) + ' ft, ' + str(self.type)
 
+
 # not using this one yet, probably shouldn't have created it
 class SurfSpot(models.Model):
     surflineId = models.CharField(max_length=100)
     spotName = models.CharField(max_length=100)
+
 
 class SurfSession(models.Model):
     spotName = models.CharField(max_length=100)
@@ -248,7 +218,6 @@ class SurfSession(models.Model):
         #    print()
 
         return list(sessions)
-
 
     # bootstrap DB with historical data in surfinfo/surfdatabootstrap
     @classmethod

@@ -32,7 +32,7 @@
                 {% for each in swells %}
                     <li class="list_section_header">Swell {{ forloop.counter }}</li>
                     <ul>
-                        <li>{{ each.height }}ft at {{ each.period }} sec, {{ each.direction }}°</li>
+                        <li>{{ each.height|floatformat:1 }}ft at {{ each.period|floatformat:0 }} sec, {{ each.direction|floatformat:0 }}°</li>
                         <li>{{ each.power }} kW/m</li>
                     </ul>
                 {% endfor %}

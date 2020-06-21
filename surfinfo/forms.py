@@ -122,7 +122,7 @@ class SessionMatchesTimeAndPlace(forms.Form):
     )
 
     # time + location based match
-    surfDatetime = forms.DateTimeField(label="When?", required=True, widget=DatetimeInput)
+    surfDatetime = forms.DateTimeField(label="When?", widget=DatetimeInput)
     surfRegion = forms.ChoiceField(label="Where?", choices=SURFREGION_CHOICES, initial=1)
 
     def clean(self):
