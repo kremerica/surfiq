@@ -11,31 +11,26 @@
   <body>
     {% if surfsession %}
     <div>
-        <h1>Thank you!</h1>
+        <h1>Session info saved!</h1>
     </div>
     <div>
         <h2>Some info about your surf at {{ surfsession.spotName }}:</h2>
-            <ul>
-                <li class="list_section_header">Swells</li>
-                <ul>
-                {% for each in surfsession.swells.all %}
-                    <li>Swell {{ forloop.counter }}: {{ each.height|floatformat:1 }} ft at {{ each.period|floatformat:0 }} sec, {{ each.direction|floatformat:0 }}°</li>
-                {% endfor %}
-                </ul>
-                <li class="list_section_header">Tides</li>
-                <ul>
-                {% for each in surfsession.tides.all %}
-                    <li>{{ each.timestamp|timezone:surftimezone|date:"g:i A" }}: {{ each.height }} ft
-                        {% if each.type != 'NORMAL' %}
-                            {{ each.type }}
-                        {% endif %}
-                    </li>
-                {% endfor %}
-                </ul>
-            </ul>
+            <p class="list_section_header">Swells</p>
+            {% for each in surfsession.swells.all %}
+                <li>Swell {{ forloop.counter }}: {{ each.height|floatformat:1 }}ft at {{ each.period|floatformat:0 }} sec, {{ each.direction|floatformat:0 }}° ({{ each.power }} kW/m)</li>
+            {% endfor %}
+            <p class="list_section_header">Tides</p>
+            {% for each in surfsession.tides.all %}
+                <li>{{ each.timestamp|timezone:surftimezone|date:"g:i A" }}: {{ each.height }} ft
+                    {% if each.type != 'NORMAL' %}
+                        {{ each.type }}
+                    {% endif %}
+                </li>
+            {% endfor %}
         {% else %}
             <p>NO TICKET BRO, GET OFF THE TRAIN (╯°□°)╯︵ ┻━┻</p>
         {% endif %}
+        <br>
     </div>
     <hr>
     <div>

@@ -152,6 +152,7 @@ def session_matches_time_and_place(request):
                    'surfDatetime': displayDatetime,
                    'surfRegion': surfRegion,
                    'swells': swells,
+                   'junk_threshold': Swell.JUNK_THRESHOLD,
                    'tide': next(iter(tide), None)})
 
 

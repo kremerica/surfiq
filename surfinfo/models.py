@@ -11,6 +11,9 @@ from datetime import datetime, timedelta, timezone
 # Create your models here.
 
 class Swell(models.Model):
+    # class attributes
+    JUNK_THRESHOLD = 1.0
+
     height = models.DecimalField(max_digits=4, decimal_places=2)
     period = models.DecimalField(max_digits=4, decimal_places=2)
     direction = models.DecimalField(max_digits=5, decimal_places=2)

@@ -31,9 +31,14 @@
         <h2>Swells</h2>
             <ul>
                 {% for each in swells %}
-                    <li class="list_section_header">Swell {{ forloop.counter }}</li>
+                    <li class="list_section_header">Swell {{ forloop.counter }}
+                        {% if each.power <= junk_threshold %}
+                            <span class="annotation">JUNK SWELL</span>
+                        {% endif %}
+                    </li>
                     <ul>
                         <li>{{ each.height|floatformat:1 }}ft at {{ each.period|floatformat:0 }} sec, {{ each.direction|floatformat:0 }}° ({{ each.power }} kW/m)</li>
+                        <li><a class="web_link" href="wheretobro?swellHeight={{ each.height|floatformat:1 }}&swellPeriod={{ each.period|floatformat:0 }}&swellDirection={{ each.direction|floatformat:0 }}&tideHeight={{ tide.height|floatformat:1 }}">Previous surfs with similar swell</a></li>
                     </ul>
                 {% endfor %}
             </ul>

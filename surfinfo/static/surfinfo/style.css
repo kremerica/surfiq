@@ -4,6 +4,7 @@
 :root {
     --accent_color: #FF0266;
     --error_color: #CC0000;
+    --background_color: #384047;
 
     --header_font: 'Montserrat', sans-serif;
     --subheader_font: 'Montserrat', sans-serif;
@@ -12,7 +13,7 @@
 
 /* catch-all style rules */
 body {
-    background-color: #384047;
+    background-color: var(--background_color);
     font-family: var(--body_font);
     color: AliceBlue;
 }
@@ -58,6 +59,18 @@ input[type=submit] {
     padding-left: 0em;
 }
 
+/* misc */
+.web_link {
+    color: AliceBlue;
+}
+.annotation {
+    margin-left: 0.5em;
+    padding: 2px 5px 2px 5px;
+    background: AliceBlue;
+    color: var(--background_color);
+    font-family: var(--header_font);
+}
+
 /* lists */
 .list_section_header {
     color: var(--accent_color);
@@ -69,6 +82,8 @@ input[type=submit] {
     padding-top: 10px;
 }
 
+
+
 /* tables */
 tr {
     height: 2.5em;
@@ -76,3 +91,4 @@ tr {
 th {
     text-align: right;
 }
+
