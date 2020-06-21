@@ -27,22 +27,25 @@
     {% if surfDatetime %}
     <hr>
     <div>
+        <h2>Tide: {{ tide.height|floatformat:1 }} ft</h2>
         <h2>Swells</h2>
             <ul>
                 {% for each in swells %}
                     <li class="list_section_header">Swell {{ forloop.counter }}</li>
                     <ul>
-                        <li>{{ each.height|floatformat:1 }}ft at {{ each.period|floatformat:0 }} sec, {{ each.direction|floatformat:0 }}°</li>
-                        <li>{{ each.power }} kW/m</li>
+                        <li>{{ each.height|floatformat:1 }}ft at {{ each.period|floatformat:0 }} sec, {{ each.direction|floatformat:0 }}° ({{ each.power }} kW/m)</li>
                     </ul>
                 {% endfor %}
             </ul>
+
     </div>
     {% endif %}
 </body>
 <script>
     // set default field values for easier resubmit
+    {% if surfDatetime %}
     document.getElementById("id_surfDatetime").value = "{{ surfDatetime }}";
     document.getElementById("id_surfRegion").value = "{{ surfRegion }}";
+    {% endif %}
 </script>
 </html>

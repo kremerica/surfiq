@@ -3,6 +3,7 @@ import json
 
 from django.db import models
 from django.db.models import Avg, Count, Sum, Max
+from django.utils.timezone import make_aware, is_naive
 
 from datetime import datetime, timedelta, timezone
 
@@ -45,28 +46,33 @@ class Swell(models.Model):
         swells = []
 
         if subregionFlag:
-            surfUrl = 'https://services.surfline.com/kbyg/regions/forecasts/wave?subregionId=' + surflineId + '&days=1&intervalHours=1&maxHeights=false'
+            # any more than 6 days of forecast requires a Surfline authentication token
+            surfUrl = 'https://services.surfline.com/kbyg/regions/forecasts/wave?subregionId=' + surflineId + '&days=6&intervalHours=1&maxHeights=false'
         else:
-            surfUrl = 'https://services.surfline.com/kbyg/spots/forecasts/wave?spotId=' + surflineId + '&days=1&intervalHours=1&maxHeights=false'
+            # any more than 6 days of forecast requires a Surfline authentication token
+            surfUrl = 'https://services.surfline.com/kbyg/spots/forecasts/wave?spotId=' + surflineId + '&days=6&intervalHours=1&maxHeights=false'
 
         surf = requests.get(surfUrl)
         surfReport = json.loads(surf.text)
 
         # print("datetime: " + str(surfDatetime))
+
         surfUtcOffset = timezone(offset=timedelta(hours=surfReport['associated']['utcOffset']))
 
         # extract all swells for that hour, DOES NOT SAVE TO DB
         for timeblock in surfReport['data']['wave']:
             timeblockDatetime = datetime.fromtimestamp(timeblock['timestamp'], tz=surfUtcOffset)
 
-            if timeblockDatetime.hour == surfDatetime.hour:
-                print(timeblockDatetime.hour)
+            # match on date (using number of days since jan 1 year 1) and hour
+            if timeblockDatetime.toordinal() == surfDatetime.toordinal() and timeblockDatetime.hour == surfDatetime.hour:
                 for each in timeblock['swells']:
                     # plop all non-zero-height swells into Swell objects, save to DB, add to surf session
                     if each['height'] != 0:
                         swells.append(Swell(height=each['height'], period=each['period'], direction=each['direction']))
 
-        return list(swells)
+        swells.sort(key=lambda x: x.power, reverse=True)
+
+        return swells
 
 
 class Tide(models.Model):
@@ -76,6 +82,36 @@ class Tide(models.Model):
 
     def __str__(self):
         return str(self.timestamp) + ': ' + str(self.height) + ' ft, ' + str(self.type)
+
+    @classmethod
+    def getSurflineTides(cls, surflineId, startDatetime, endDatetime):
+        tides = []
+
+        # any more than 6 days of forecast requires a Surfline authentication token
+        tideUrl = 'https://services.surfline.com/kbyg/spots/forecasts/tides?spotId=' + surflineId + '&days=6'
+
+        tide = requests.get(tideUrl)
+        tideReport = json.loads(tide.text)
+
+        # print("datetime: " + str(surfDatetime))
+        tideUtcOffset = timezone(offset=timedelta(hours=tideReport['associated']['utcOffset']))
+
+        # if startDatetime or endDatetime are naive, make aware with same timezone as tide report
+        if is_naive(startDatetime):
+            startDatetime = make_aware(startDatetime, timezone=tideUtcOffset)
+
+        if is_naive(endDatetime):
+            endDatetime = make_aware(endDatetime, timezone=tideUtcOffset)
+
+        # extract tide info for every hour in a session, include "special" tides
+        for each in tideReport['data']['tides']:
+            # package tide datetime into object for comparison
+            tideDatetime = datetime.fromtimestamp(each['timestamp'], tz=tideUtcOffset)
+
+            if tideDatetime.hour >= startDatetime.hour and endDatetime > tideDatetime:
+                tides.append(Tide(timestamp=tideDatetime, height=each['height'], type=each['type']))
+
+        return tides
 
 
 # not using this one yet, probably shouldn't have created it
@@ -151,29 +187,20 @@ class SurfSession(models.Model):
         # save to DB
         todaySession.save()
 
-        # find the "hour index" that maps to the same hour as the start of the session
-        startHourIndex = startDateTime.hour
+        todaySessionSwells = Swell.getSurflineSwells(surflineId=spotId,
+                                                     subregionFlag=False,
+                                                     surfDatetime=startDateTime)
+        for each in todaySessionSwells:
+            each.save()
+            todaySession.swells.add(each)
 
-        # extract all swells for that hour
-        for each in surfReport['data']['wave'][startHourIndex]['swells']:
-            # plop all non-zero-height swells into Swell objects, save to DB, add to surf session
-            if each['height'] != 0:
-                swell = Swell(height=each['height'], period=each['period'], direction=each['direction'])
-                swell.save()
-                todaySession.swells.add(swell)
+        todaySessionTides = Tide.getSurflineTides(surflineId=spotId,
+                                                  startDatetime=startDateTime,
+                                                  endDatetime=endDateTime)
 
-        # extract tide info for every hour in a session
-        #   this clumsy structure is intended to grab hourly tides for a session, PLUS "special" tides
-        #   like high tide, low tide, etc
-        #   it is also intended to grab at least one tide entry, even if session was super short
-        for each in tideReport['data']['tides']:
-            # package tide datetime into object for comparison
-            tideDateTime = datetime.fromtimestamp(each['timestamp'], tz=surfUtcOffset)
-
-            if tideDateTime.hour >= startDateTime.hour and endDateTime > tideDateTime:
-                tide = Tide(timestamp=tideDateTime, height=each['height'], type=each['type'])
-                tide.save()
-                todaySession.tides.add(tide)
+        for each in todaySessionTides:
+            each.save()
+            todaySession.tides.add(each)
 
         return todaySession
 

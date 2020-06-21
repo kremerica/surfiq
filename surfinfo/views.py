@@ -126,9 +126,14 @@ def session_matches_time_and_place(request):
     surfDatetime = request.GET.get('surfDatetime', None)
     surfRegion = request.GET.get('surfRegion', None)
 
+    REGION_TO_SPOT = {'58581a836630e24c44879011': '5842041f4e65fad6a7708805',
+                      '5cc73566c30e4c0001096989': '5842041f4e65fad6a7708976',
+                      '58581a836630e24c44879010': '5842041f4e65fad6a77087f8'}
+
     form = SessionMatchesTimeAndPlace()
     displayDatetime = None
     swells = None
+    tide = None
 
     if surfDatetime is not None and surfRegion is not None:
         surfDatetime = datetime.strptime(surfDatetime, '%Y-%m-%dT%H:%M')
@@ -138,13 +143,17 @@ def session_matches_time_and_place(request):
                                          subregionFlag=True,
                                          surfDatetime=surfDatetime)
 
-        swells.sort(key=lambda x: x.power, reverse=True)
+        tide = Tide.getSurflineTides(surflineId=REGION_TO_SPOT[surfRegion],
+                                     startDatetime=surfDatetime,
+                                     endDatetime=surfDatetime + timedelta(milliseconds=1))
 
     return render(request, 'surfinfo/getswells.html',
                   {'form': form,
                    'surfDatetime': displayDatetime,
                    'surfRegion': surfRegion,
-                   'swells': swells})
+                   'swells': swells,
+                   'tide': tide[0]})
+
 
 # -----------------------------------------------------------------------------------
 # bootstrap DB with historical data

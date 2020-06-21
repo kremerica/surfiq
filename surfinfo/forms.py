@@ -1,5 +1,5 @@
 from django import forms
-from datetime import datetime
+from datetime import datetime, timedelta
 
 class TimeInput(forms.TimeInput):
     input_type = "time"
@@ -126,4 +126,9 @@ class SessionMatchesTimeAndPlace(forms.Form):
     surfRegion = forms.ChoiceField(label="Where?", choices=SURFREGION_CHOICES, initial=1)
 
     def clean(self):
+        MAX_SURFLINE_LOOKAHEAD_DAYS = 6
+
         surfDatetime = self.cleaned_data["surfDatetime"]
+
+        if surfDatetime - datetime.now() > timedelta(days=MAX_SURFLINE_LOOKAHEAD_DAYS):
+            self.add_error("surfDatetime", "Max 6 days in the future, bro")

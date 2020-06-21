@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 
 from django.test import TestCase
 
@@ -69,7 +69,7 @@ class SurfSessionModelTests(TestCase):
         :return:
         """
 
-        right_now = datetime.now()
+        right_now = datetime.now(tz=timezone(offset=timedelta(hours=-7)))
 
         # get swells for Steamer's
         spotSwells = Swell.getSurflineSwells(surflineId="5842041f4e65fad6a7708805", subregionFlag=False, surfDatetime=right_now)
@@ -79,6 +79,22 @@ class SurfSessionModelTests(TestCase):
 
         self.assertGreater(len(spotSwells), 0)
         self.assertGreater(len(regionSwells), 0)
+
+    def test_get_surfline_tides(self):
+        """
+        smoke test for getting spot tides from Surfline
+        :return:
+        """
+
+        start_time = datetime.now(tz=timezone(offset=timedelta(hours=-7)))
+        end_time = start_time + timedelta(hours=1)
+
+        # grab tides for Steamer's
+        spotTides = Tide.getSurflineTides(surflineId="5842041f4e65fad6a7708805",
+                                          startDatetime=start_time,
+                                          endDatetime=end_time)
+
+        self.assertGreater(len(spotTides), 0)
 
     def test_add_surf_session(self):
         """
