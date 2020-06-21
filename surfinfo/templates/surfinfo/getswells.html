@@ -28,11 +28,11 @@
     <hr>
     <div>
         <h2>Tide: {{ tide.height|floatformat:1 }} ft</h2>
-        <h2>Surfable swells</h2>
+        <h2>Swells</h2>
             {% for each in swells %}
             <ul>
                 {% if each.power > junk_threshold %}
-                    <li class="list_section_header">Swell {{ forloop.counter }}</li>
+                    <li class="list_section_header">Surfable swell {{ forloop.counter }}</li>
                 {% else %}
                     <li class="list_section_header">Junk swell</li>
                 {% endif %}
