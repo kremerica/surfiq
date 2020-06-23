@@ -29,9 +29,8 @@
     {% if swellHeight %}
     <hr>
     <div>
-        <h2>{{ swellHeight }}ft at {{ swellPeriod }}s, {{ swellDirection }}°</h2>
+        <h2>{{ swellHeight }}ft at {{ swellPeriod }}s, {{ swellDirection }}° ({{ swellPower }} kW/m)</h2>
         <h2>{{ tideHeight }}ft tide</h2>
-        <h3>Swell power: {{ swellPower }} kW/m</h3>
         {% if sessions %}
         <h3>Matching sessions:</h3>
             <ul>
@@ -39,8 +38,8 @@
                     <li class="list_section_header">{{ each.spotName }}</li>
                     <ul>
                         <li>{{ each.id__count }} sessions</li>
-                        <li>Avg score: {{ each.surfScore__avg|floatformat:1 }}</li>
-                        <li>Avg wave count: {{ each.waveCount__avg|floatformat:1 }}</li>
+                        <li>Avg score: {{ each.surfScore__avg|floatformat:1 }} out of 5</li>
+                        <li>Avg wave count: {{ each.waveCount__avg|floatformat:0 }}</li>
                     </ul>
                 {% endfor %}
             </ul>

@@ -150,7 +150,7 @@ def session_matches_time_and_place(request):
                                      startDatetime=surfDatetime,
                                      endDatetime=surfDatetime + timedelta(milliseconds=1))
 
-    return render(request, 'surfinfo/getswells.html',
+    return render(request, 'surfinfo/getconditions.html',
                   {'form': form,
                    'surfDatetime': displayDatetime,
                    'surfRegion': surfRegion,

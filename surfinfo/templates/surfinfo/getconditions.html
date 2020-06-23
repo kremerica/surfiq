@@ -34,7 +34,7 @@
             {% for each in swells %}
             <ul>
                 {% if each.power > junk_threshold %}
-                    <li class="list_section_header">Surfable swell {{ forloop.counter }}</li>
+                    <li class="list_section_header">Swell {{ forloop.counter }}</li>
                 {% else %}
                     <li class="list_section_header">Junk swell</li>
                 {% endif %}
@@ -44,15 +44,25 @@
                 </ul>
             </ul>
             {% endfor %}
-
     </div>
+    <hr>
+    <h3>What does all this mean?</h3>
+    <p>Click on a swell to see info about surf sessions with similar swell and tide</p>
+    <p>Swells that aren't likely to result in surfable waves are marked as "junk swell" and will show you misleading results</p>
     {% endif %}
 </body>
 <script>
     // set default field values for easier resubmit
     {% if surfDatetime %}
-    document.getElementById("id_surfDatetime").value = "{{ surfDatetime }}";
-    document.getElementById("id_surfRegion").value = "{{ surfRegion }}";
+        document.getElementById("id_surfDatetime").value = "{{ surfDatetime }}";
+        document.getElementById("id_surfRegion").value = "{{ surfRegion }}";
+    {% else %}
+        var now = new Date();
+        now.setUTCDate(now.getDate() + 1)
+        now.setUTCHours(6);
+        now.setUTCMinutes(0);
+        now.setUTCSeconds(0);
+        document.getElementById("id_surfDatetime").value = now.toISOString().slice(0,16);
     {% endif %}
 </script>
 </html>
