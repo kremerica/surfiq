@@ -2,7 +2,7 @@ import requests
 import json
 
 from django.db import models
-from django.db.models import Avg, Count, Sum, Max
+from django.db.models import Avg, Count
 from django.utils.timezone import make_aware, is_naive
 
 from datetime import datetime, timedelta, timezone
@@ -20,10 +20,10 @@ class Swell(models.Model):
 
     @property
     def power(self):
-        METER_TO_FOOT_CONVERSION = 3.28084
+        meter_to_foot_conversion = 3.28084
 
         # wave power equation, more info at https://en.wikipedia.org/wiki/Wave_power
-        return round(0.5 * ((float(self.height) / METER_TO_FOOT_CONVERSION) ** 2) * float(self.period), 1)
+        return round(0.5 * ((float(self.height) / meter_to_foot_conversion) ** 2) * float(self.period), 1)
 
     def __lt__(self, other):
         return self.power < other.power
@@ -45,7 +45,7 @@ class Swell(models.Model):
             self.direction) + ', power: ' + str(self.power)
 
     @classmethod
-    def getSurflineSwells(cls, surflineId, subregionFlag, surfDatetime):
+    def get_surfline_swells(cls, surflineId, subregionFlag, surfDatetime):
         swells = []
 
         if subregionFlag:
@@ -111,7 +111,7 @@ class Tide(models.Model):
             # package tide datetime into object for comparison
             tideDatetime = datetime.fromtimestamp(each['timestamp'], tz=tideUtcOffset)
 
-            if tideDatetime.hour >= startDatetime.hour and endDatetime > tideDatetime:
+            if tideDatetime.day == startDatetime.day and tideDatetime.hour >= startDatetime.hour and endDatetime > tideDatetime:
                 tides.append(Tide(timestamp=tideDatetime, height=each['height'], type=each['type']))
 
         return tides
@@ -190,9 +190,9 @@ class SurfSession(models.Model):
         # save to DB
         todaySession.save()
 
-        todaySessionSwells = Swell.getSurflineSwells(surflineId=spotId,
-                                                     subregionFlag=False,
-                                                     surfDatetime=startDateTime)
+        todaySessionSwells = Swell.get_surfline_swells(surflineId=spotId,
+                                                       subregionFlag=False,
+                                                       surfDatetime=startDateTime)
         for each in todaySessionSwells:
             each.save()
             todaySession.swells.add(each)
@@ -230,10 +230,8 @@ class SurfSession(models.Model):
                                                  tides__height__gte=tide - tide_factor,
                                                  tides__height__lte=tide + tide_factor).distinct()
 
-        #    print()
-        #    print("*** CONDITIONS ***")
-        #    print("*** " + str(height) + "ft " + str(period) + "s at " + str(direction) + "°, tide height " + str(tide))
-        #    print("*** PREVIOUS SURFS ***")
+        # print() print("*** CONDITIONS ***") print("*** " + str(height) + "ft " + str(period) + "s at " + str(
+        # direction) + "°, tide height " + str(tide)) print("*** PREVIOUS SURFS ***")
 
         sessions = rawSessions.values("spotName").annotate(Avg("surfScore"), Avg("waveCount"), Count("id")).order_by(
             '-id__count')

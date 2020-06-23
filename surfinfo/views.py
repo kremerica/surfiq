@@ -142,9 +142,9 @@ def session_matches_time_and_place(request):
         surfDatetime = datetime.strptime(surfDatetime, '%Y-%m-%dT%H:%M')
         displayDatetime = surfDatetime.strftime('%Y-%m-%dT%H:%M')
 
-        swells = Swell.getSurflineSwells(surflineId=surfRegion,
-                                         subregionFlag=True,
-                                         surfDatetime=surfDatetime)
+        swells = Swell.get_surfline_swells(surflineId=surfRegion,
+                                           subregionFlag=True,
+                                           surfDatetime=surfDatetime)
 
         tide = Tide.getSurflineTides(surflineId=REGION_TO_SPOT[surfRegion],
                                      startDatetime=surfDatetime,

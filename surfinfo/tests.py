@@ -72,10 +72,10 @@ class SurfSessionModelTests(TestCase):
         right_now = datetime.now(tz=timezone(offset=timedelta(hours=-7)))
 
         # get swells for Steamer's
-        spotSwells = Swell.getSurflineSwells(surflineId="5842041f4e65fad6a7708805", subregionFlag=False, surfDatetime=right_now)
+        spotSwells = Swell.get_surfline_swells(surflineId="5842041f4e65fad6a7708805", subregionFlag=False, surfDatetime=right_now)
 
         # get swells for Santa Cruz County
-        regionSwells = Swell.getSurflineSwells(surflineId="58581a836630e24c44879011", subregionFlag=True, surfDatetime=right_now)
+        regionSwells = Swell.get_surfline_swells(surflineId="58581a836630e24c44879011", subregionFlag=True, surfDatetime=right_now)
 
         self.assertGreater(len(spotSwells), 0)
         self.assertGreater(len(regionSwells), 0)
