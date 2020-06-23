@@ -17,7 +17,7 @@ class SurfSessionModelTests(TestCase):
         :return:
         """
 
-        self.assertIs(SurfSession.dataBootstrap(), True)
+        self.assertIs(SurfSession.data_bootstrap(), True)
 
         # count surf sessions loaded up
         self.assertEqual(SurfSession.objects.all().count(), 123)
@@ -35,7 +35,7 @@ class SurfSessionModelTests(TestCase):
         self.assertEqual(SurfSession.objects.filter(tides__height__lt=0).distinct().count(), 17)
 
         # try to bootstrap again, should return false
-        self.assertIs(SurfSession.dataBootstrap(), False, msg="Second bootstrap call returned True")
+        self.assertIs(SurfSession.data_bootstrap(), False, msg="Second bootstrap call returned True")
 
         # recount surf sessions, make sure the number hasn't changed
         self.assertEqual(SurfSession.objects.all().count(), 123, msg="Second bootstrap call added stuff")
@@ -90,9 +90,9 @@ class SurfSessionModelTests(TestCase):
         end_time = start_time + timedelta(hours=1)
 
         # grab tides for Steamer's
-        spotTides = Tide.getSurflineTides(surflineId="5842041f4e65fad6a7708805",
-                                          startDatetime=start_time,
-                                          endDatetime=end_time)
+        spotTides = Tide.get_surfline_tides(surflineId="5842041f4e65fad6a7708805",
+                                            startDatetime=start_time,
+                                            endDatetime=end_time)
 
         self.assertGreater(len(spotTides), 0)
 
@@ -105,13 +105,13 @@ class SurfSessionModelTests(TestCase):
 
         right_now = datetime.now()
 
-        input_session = SurfSession.fromSurfline(spotId="5842041f4e65fad6a7708805",
-                                                 spotName="Steamer Lane",
-                                                 startTime=right_now.time(),
-                                                 endTime=right_now.time(),
-                                                 surfScore=3,
-                                                 crowdScore=3,
-                                                 waveCount=-1)
+        input_session = SurfSession.from_surfline(spotId="5842041f4e65fad6a7708805",
+                                                  spotName="Steamer Lane",
+                                                  startTime=right_now.time(),
+                                                  endTime=right_now.time(),
+                                                  surfScore=3,
+                                                  crowdScore=3,
+                                                  waveCount=-1)
 
         # confirm that the test session was added to DB by retrieving and comparing
         database_session = SurfSession.objects.get(id=input_session.id)

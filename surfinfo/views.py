@@ -11,8 +11,9 @@ from .forms import AddSessionForm, AddSurfSpot, SessionMatchesConditions, Sessio
 def index(request):
     return render(request, 'surfinfo/index.html')
 
+
 # adding a session
-def addsession(request):
+def add_session(request):
     # if this is a POST request, process form data
     if request.method == 'POST':
         form = AddSessionForm(request.POST)
@@ -31,13 +32,13 @@ def addsession(request):
             # only process the data if there was a spot selected
             if surfSpotId != 'NONE':
                 # create a SurfSession object, save to DB
-                todaySession = SurfSession.fromSurfline(spotId=surfSpotId,
-                                                        spotName=surfSpotName,
-                                                        startTime=startTime,
-                                                        endTime=endTime,
-                                                        surfScore=surfScore,
-                                                        crowdScore=crowdScore,
-                                                        waveCount=waveCount)
+                todaySession = SurfSession.from_surfline(spotId=surfSpotId,
+                                                         spotName=surfSpotName,
+                                                         startTime=startTime,
+                                                         endTime=endTime,
+                                                         surfScore=surfScore,
+                                                         crowdScore=crowdScore,
+                                                         waveCount=waveCount)
                 # redirect to a new URL
                 return HttpResponseRedirect('congratsbro?sessionid=' + str(todaySession.id))
             else:
@@ -49,8 +50,9 @@ def addsession(request):
 
     return render(request, 'surfinfo/sessionform.html', {'form': form})
 
+
 # thank you for adding a session
-def sessionthankyou(request):
+def session_thankyou(request):
     if request.GET['sessionid']:
         if SurfSession.objects.filter(id=request.GET['sessionid']).exists():
             todaySession = SurfSession.objects.get(id=request.GET['sessionid'])
@@ -60,12 +62,12 @@ def sessionthankyou(request):
         todaySession = None
 
     # note for future: might need better conversion than typecasting as int for surfsession.spotUtcOffset from decimal to hours + minutes
-    return render(request, 'surfinfo/sessionthankyou.html', {'surfsession': todaySession, 'surftimezone': timezone(
+    return render(request, 'surfinfo/session_thankyou.html', {'surfsession': todaySession, 'surftimezone': timezone(
         offset=timedelta(hours=int(todaySession.spotUtcOffset)))})
 
 
 # request a new surf spot
-def requestnewspot(request):
+def request_new_spot(request):
     # if this is a POST request, process form data
     if request.method == 'POST':
         form = AddSurfSpot(request.POST)
@@ -85,7 +87,7 @@ def requestnewspot(request):
 
 
 # thank the user for requesting a new surf spot
-def spotthankyou(request):
+def spot_thankyou(request):
     spotid = request.GET.get('spotid')
 
     if spotid:
@@ -96,7 +98,7 @@ def spotthankyou(request):
     else:
         newSpot = None
 
-    return render(request, 'surfinfo/spotthankyou.html', {'newSpot': newSpot})
+    return render(request, 'surfinfo/spot_thankyou.html', {'newSpot': newSpot})
 
 
 # find matching sessions for surf conditions
@@ -109,10 +111,10 @@ def session_matches_conditions(request):
                   period=request.GET.get('swellPeriod', 0),
                   direction=request.GET.get('swellDirection', 0))
 
-    sessions = SurfSession.getMatchingSessions(swellHeight=swell.height,
-                                               swellPeriod=swell.period,
-                                               swellDirection=swell.direction,
-                                               tideHeight=tide)
+    sessions = SurfSession.get_matching_sessions(swellHeight=swell.height,
+                                                 swellPeriod=swell.period,
+                                                 swellDirection=swell.direction,
+                                                 tideHeight=tide)
 
     return render(request, 'surfinfo/getmatchingsessions.html',
                   {'form': form,
@@ -146,9 +148,9 @@ def session_matches_time_and_place(request):
                                            subregionFlag=True,
                                            surfDatetime=surfDatetime)
 
-        tide = Tide.getSurflineTides(surflineId=REGION_TO_SPOT[surfRegion],
-                                     startDatetime=surfDatetime,
-                                     endDatetime=surfDatetime + timedelta(milliseconds=1))
+        tide = Tide.get_surfline_tides(surflineId=REGION_TO_SPOT[surfRegion],
+                                       startDatetime=surfDatetime,
+                                       endDatetime=surfDatetime + timedelta(milliseconds=1))
 
     return render(request, 'surfinfo/getconditions.html',
                   {'form': form,
@@ -161,8 +163,8 @@ def session_matches_time_and_place(request):
 
 # -----------------------------------------------------------------------------------
 # bootstrap DB with historical data
-def databootstrap(request):
-    if SurfSession.dataBootstrap():
+def data_bootstrap(request):
+    if SurfSession.data_bootstrap():
         return HttpResponse("All done bro, historical sessions locked and loaded")
     else:
         return HttpResponse("Already bootstrapped bro, ADIOS MOTHAFUCKA")

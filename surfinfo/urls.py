@@ -4,11 +4,11 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('addsessionbro', views.addsession, name='addsessionbro'),
-    path('congratsbro', views.sessionthankyou, name='congratsbro'),
-    path('newspotbro', views.requestnewspot, name='newspotbro'),
-    path('thanksbro', views.spotthankyou, name='thanksbro'),
+    path('addsessionbro', views.add_session, name='addsessionbro'),
+    path('congratsbro', views.session_thankyou, name='congratsbro'),
+    path('newspotbro', views.request_new_spot, name='newspotbro'),
+    path('thanksbro', views.spot_thankyou, name='thanksbro'),
     path('wheretobro', views.session_matches_conditions, name='whereto'),
     path('wherewhenbro', views.session_matches_time_and_place, name='wherewhenbro'),
-    path('databootstrap', views.databootstrap, name='databootstrap'),
+    path('data_bootstrap', views.data_bootstrap, name='data_bootstrap'),
 ]

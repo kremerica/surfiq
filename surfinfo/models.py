@@ -20,10 +20,10 @@ class Swell(models.Model):
 
     @property
     def power(self):
-        meter_to_foot_conversion = 3.28084
+        METER_TO_FOOT_CONVERSION = 3.28084
 
         # wave power equation, more info at https://en.wikipedia.org/wiki/Wave_power
-        return round(0.5 * ((float(self.height) / meter_to_foot_conversion) ** 2) * float(self.period), 1)
+        return round(0.5 * ((float(self.height) / METER_TO_FOOT_CONVERSION) ** 2) * float(self.period), 1)
 
     def __lt__(self, other):
         return self.power < other.power
@@ -87,7 +87,7 @@ class Tide(models.Model):
         return str(self.timestamp) + ': ' + str(self.height) + ' ft, ' + str(self.type)
 
     @classmethod
-    def getSurflineTides(cls, surflineId, startDatetime, endDatetime):
+    def get_surfline_tides(cls, surflineId, startDatetime, endDatetime):
         tides = []
 
         # any more than 6 days of forecast requires a Surfline authentication token
@@ -152,7 +152,7 @@ class SurfSession(models.Model):
 
     # helper method to extract surf info from a URL, create a new SurfSession object with that info, and save to DB
     @classmethod
-    def fromSurfline(cls, spotId, spotName, startTime, endTime, surfScore, crowdScore, waveCount):
+    def from_surfline(cls, spotId, spotName, startTime, endTime, surfScore, crowdScore, waveCount):
         surfUrl = 'https://services.surfline.com/kbyg/spots/forecasts/wave?spotId=' + spotId + '&days=1&intervalHours=1&maxHeights=false'
         surf = requests.get(surfUrl)
         surfReport = json.loads(surf.text)
@@ -197,9 +197,9 @@ class SurfSession(models.Model):
             each.save()
             todaySession.swells.add(each)
 
-        todaySessionTides = Tide.getSurflineTides(surflineId=spotId,
-                                                  startDatetime=startDateTime,
-                                                  endDatetime=endDateTime)
+        todaySessionTides = Tide.get_surfline_tides(surflineId=spotId,
+                                                    startDatetime=startDateTime,
+                                                    endDatetime=endDateTime)
 
         for each in todaySessionTides:
             each.save()
@@ -209,7 +209,7 @@ class SurfSession(models.Model):
 
     # helper method to find matching sessions for a given Swell + Tide
     @classmethod
-    def getMatchingSessions(cls, swellHeight, swellPeriod, swellDirection, tideHeight):
+    def get_matching_sessions(cls, swellHeight, swellPeriod, swellDirection, tideHeight):
         height_factor = 0.25
         period_factor = 1
         direction_factor = 10
@@ -249,7 +249,7 @@ class SurfSession(models.Model):
 
     # bootstrap DB with historical data in surfinfo/surfdatabootstrap
     @classmethod
-    def dataBootstrap(cls):
+    def data_bootstrap(cls):
         # open surf data bootstrap file
         with open("surfinfo/surfdatabootstrap.json", "r") as read_file:
             surfData = json.load(read_file)
