@@ -62,7 +62,7 @@ def session_thankyou(request):
         todaySession = None
 
     # note for future: might need better conversion than typecasting as int for surfsession.spotUtcOffset from decimal to hours + minutes
-    return render(request, 'surfinfo/session_thankyou.html', {'surfsession': todaySession, 'surftimezone': timezone(
+    return render(request, 'surfinfo/sessionthankyou.html', {'surfsession': todaySession, 'surftimezone': timezone(
         offset=timedelta(hours=int(todaySession.spotUtcOffset)))})
 
 
@@ -83,7 +83,7 @@ def request_new_spot(request):
     else:
         form = AddSurfSpot()
 
-    return render(request, 'surfinfo/surfspotform.html', {'form': form})
+    return render(request, 'surfinfo/sessionthankyou.html', {'form': form})
 
 
 # thank the user for requesting a new surf spot
@@ -98,7 +98,7 @@ def spot_thankyou(request):
     else:
         newSpot = None
 
-    return render(request, 'surfinfo/spot_thankyou.html', {'newSpot': newSpot})
+    return render(request, 'surfinfo/spotthankyou.html', {'newSpot': newSpot})
 
 
 # find matching sessions for surf conditions
