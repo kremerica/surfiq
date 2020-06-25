@@ -148,7 +148,12 @@ class SurfSession(models.Model):
     board = models.CharField(max_length=100)
 
     def __str__(self):
-        return str(self.spotName) + ': ' + str(self.waveCount) + ' waves'
+        swells = "**swells**\n"
+
+        for each in self.swells.all():
+            swells += str(each) + '\n'
+
+        return str(self.spotName) + ', score: ' + str(self.surfScore) + '\n' + swells + '\n'
 
     # helper method to extract surf info from a URL, create a new SurfSession object with that info, and save to DB
     @classmethod
@@ -210,8 +215,10 @@ class SurfSession(models.Model):
     # helper method to find matching sessions for a given Swell + Tide
     @classmethod
     def get_matching_sessions(cls, swellHeight, swellPeriod, swellDirection, tideHeight):
-        height_factor = 0.25
-        period_factor = 1
+        height_factor_low_end = 0.3
+        height_factor_high_end = 0.1
+        period_factor_low_end = 3
+        period_factor_high_end = 1
         direction_factor = 10
         tide_factor = 0.75
 
@@ -221,10 +228,10 @@ class SurfSession(models.Model):
         tide = float(tideHeight)
 
         # get a queryset of all sessions
-        rawSessions = SurfSession.objects.filter(swells__height__gte=height - height_factor,
-                                                 swells__height__lte=height + height_factor,
-                                                 swells__period__gte=period - period_factor,
-                                                 swells__period__lte=period + period_factor,
+        rawSessions = SurfSession.objects.filter(swells__height__gte=height - height_factor_low_end,
+                                                 swells__height__lte=height + height_factor_high_end,
+                                                 swells__period__gte=period - period_factor_low_end,
+                                                 swells__period__lte=period + period_factor_high_end,
                                                  swells__direction__gte=direction - direction_factor,
                                                  swells__direction__lte=direction + direction_factor,
                                                  tides__height__gte=tide - tide_factor,
@@ -236,14 +243,11 @@ class SurfSession(models.Model):
         sessions = rawSessions.values("spotName").annotate(Avg("surfScore"), Avg("waveCount"), Count("id")).order_by(
             '-id__count')
 
-        #    if sessions.exists():
-        #        for each in sessions:
-        #            print(str(each["spotName"]) + ": " +
-        #                  str(each["id__count"]) + " sessions, avg score " +
-        #                  str(round(each["surfScore__avg"], 1)) + "/5, avg wave count " +
-        #                  str(round(each["waveCount__avg"], 1)))
-        #
-        #    print()
+        # debugging statement: https://surfiq.atlassian.net/jira/software/projects/SI/boards/1?selectedIssue=SI-65
+        # TODO comment this print statement out
+        if rawSessions.exists():
+            for each in rawSessions:
+                print(each)
 
         return list(sessions)
 
