@@ -2,7 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 
 from .models import Swell, Tide, SurfSession, SurfSpot
-from datetime import datetime, timedelta, date, timezone
+from datetime import datetime, timedelta, timezone
 
 from .forms import AddSessionForm, AddSurfSpot, SessionMatchesConditions, SessionMatchesTimeAndPlace
 
@@ -133,7 +133,10 @@ def session_matches_time_and_place(request):
 
     REGION_TO_SPOT = {'58581a836630e24c44879011': '5842041f4e65fad6a7708805',
                       '5cc73566c30e4c0001096989': '5842041f4e65fad6a7708976',
-                      '58581a836630e24c44879010': '5842041f4e65fad6a77087f8'}
+                      '58581a836630e24c44879010': '5842041f4e65fad6a77087f8',
+                      '58581a836630e24c44878fd7': '5842041f4e65fad6a77088b3',
+                      '58581a836630e24c4487900d': '5842041f4e65fad6a770883b',
+                      }
 
     form = SessionMatchesTimeAndPlace()
     displayDatetime = None

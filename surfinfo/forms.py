@@ -26,22 +26,31 @@ class AddSessionForm(forms.Form):
             ("26th Ave:5842041f4e65fad6a770898a", "26th Ave"),
             ("Manresa:5842041f4e65fad6a770898e", "Manresa"),
             ("Capitola:5842041f4e65fad6a7708ddf", "Capitola"),
-        ),
+            ),
          ),
         ("San Francisco County", (
             ("Ocean Beach, Sloat:5842041f4e65fad6a77087f8", "Ocean Beach, Sloat"),
             ("Ocean Beach, Balboa:5842041f4e65fad6a77087f8", "Ocean Beach, Balboa"),
             ("Ocean Beach, Noriega:5842041f4e65fad6a77087f8", "Ocean Beach, Noriega"),
+            ),
         ),
-         ),
         ("San Mateo County", (
             ("Linda Mar, Pacifica:5842041f4e65fad6a7708976", "Linda Mar, Pacifica"),
+            ),
         ),
-         ),
+        ("North San Diego", (
+            ("Seaside Reef:5842041f4e65fad6a77088b3", "Seaside Reef"),
+            ),
+        ),
+        ("South San Diego", (
+            ("Black's:5842041f4e65fad6a770883b", "Black's"),
+            ("Ocean Beach Jetty:5842041f4e65fad6a770883f", "Ocean Beach Jetty"),
+            ),
+        ),
         ("None of these?", (
             ("NEW SPOT:NONE", "REQUEST NEW SPOT"),
-        ),
-         )
+            ),
+        )
     ]
 
     SURFSCORE_CHOICES = (
@@ -119,6 +128,8 @@ class SessionMatchesTimeAndPlace(forms.Form):
         ("58581a836630e24c44879011", "Santa Cruz County"),
         ("5cc73566c30e4c0001096989", "San Mateo County"),
         ("58581a836630e24c44879010", "San Francisco County"),
+        ("58581a836630e24c44878fd7", "North San Diego"),
+        ("58581a836630e24c4487900d", "South San Diego"),
     )
 
     # time + location based match
