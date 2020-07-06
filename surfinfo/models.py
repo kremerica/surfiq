@@ -237,17 +237,36 @@ class SurfSession(models.Model):
                                                  tides__height__gte=tide - tide_factor,
                                                  tides__height__lte=tide + tide_factor).distinct()
 
+        # rawSwells = Swell.objects.filter(height__gte=height - height_factor_low_end,
+        #                                 height__lte=height + height_factor_high_end,
+        #                                 period__gte=period - period_factor_low_end,
+        #                                 period__lte=period + period_factor_high_end,
+        #                                 direction__gte=direction - direction_factor,
+        #                                 direction__lte=direction + direction_factor)
+
+        # experimentalSessions = SurfSession.objects.filter(swells__in=rawSwells,
+        #                                                  tides__height__gte=tide - tide_factor,
+        #                                                  tides__height__lte=tide + tide_factor).distinct()
+
         # print() print("*** CONDITIONS ***") print("*** " + str(height) + "ft " + str(period) + "s at " + str(
         # direction) + "°, tide height " + str(tide)) print("*** PREVIOUS SURFS ***")
 
         sessions = rawSessions.values("spotName").annotate(Avg("surfScore"), Avg("waveCount"), Count("id")).order_by(
             '-id__count')
 
+        print(sessions)
+
         # debugging statement: https://surfiq.atlassian.net/jira/software/projects/SI/boards/1?selectedIssue=SI-65
         # TODO comment this print statement out
         if rawSessions.exists():
+            print("SESSIONS")
             for each in rawSessions:
                 print(each)
+
+        # if experimentalSessions.exists():
+        #    print("EXPERIMENTAL")
+        #    for each in experimentalSessions:
+        #        print(each)
 
         return list(sessions)
 

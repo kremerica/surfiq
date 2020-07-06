@@ -83,7 +83,7 @@ def request_new_spot(request):
     else:
         form = AddSurfSpot()
 
-    return render(request, 'surfinfo/sessionthankyou.html', {'form': form})
+    return render(request, 'surfinfo/surfspotform.html', {'form': form})
 
 
 # thank the user for requesting a new surf spot
