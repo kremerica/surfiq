@@ -1,6 +1,7 @@
 from datetime import datetime, timezone, timedelta
-
-from django.test import TestCase
+from django.test import TestCase, Client
+from django.urls import reverse
+import json
 
 from .models import SurfSession, Swell, Tide
 
@@ -117,3 +118,60 @@ class SurfSessionModelTests(TestCase):
         database_session = SurfSession.objects.get(id=input_session.id)
 
         self.assertEqual(input_session.surflineId, database_session.surflineId)
+
+# if failure due to "Missing staticfiles manifest...", cmd line: python manage.py collectstatic
+class TestViews(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+        self.session1 = SurfSession.from_surfline(spotId="5842041f4e65fad6a7708805",
+                                                  spotName="Steamer Lane",
+                                                  startTime=datetime.now().time(),
+                                                  endTime=datetime.now().time(),
+                                                  surfScore=3,
+                                                  crowdScore=3,
+                                                  waveCount=-1)
+
+    def test_surfinfo_index_GET(self):
+        response = self.client.get(reverse('index'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'surfinfo/index.html')
+
+    def test_addsession_GET(self):
+        response = self.client.get(reverse('add_session'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'surfinfo/sessionform.html')
+
+    def test_addsession_POST_adds_new_session(self):
+        response = self.client.post(reverse('add_session'), {
+            'surfSpot': 'Steamer Lane:5842041f4e65fad6a7708805',
+            'startTime': '06:00',
+            'endTime': '08:00',
+            'surfScore': 3,
+            'crowdScore': 3,
+            'waveCount': -1,
+        })
+
+        self.assertRedirects(response,
+                             reverse('session_thankyou') + '?sessionid=2',
+                             status_code=302,
+                             target_status_code=200,
+                             msg_prefix='',
+                             fetch_redirect_response=True)
+
+    def test_session_thankyou_GET(self):
+        response = self.client.get(reverse('session_thankyou') + '?sessionid=1')
+
+        # basic sanity check
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'surfinfo/sessionthankyou.html')
+
+        # test context
+        self.assertEqual(response.context['surfsession'].spotName, 'Steamer Lane')
+
+    def test_data_bootstrap_GET(self):
+        response = self.client.get(reverse('data_bootstrap'))
+
+        self.assertEqual(response.status_code, 200)
