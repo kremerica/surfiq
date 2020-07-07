@@ -4,7 +4,9 @@
 :root {
     --accent_color: #FF0266;
     --error_color: #CC0000;
-    --background_color: #384047;
+    --background_color: #1E2019;
+    --font_color: #F0F8FF;
+    --link_color: #F0F8FF;
 
     --header_font: 'Montserrat', sans-serif;
     --subheader_font: 'Montserrat', sans-serif;
@@ -15,7 +17,7 @@
 body {
     background-color: var(--background_color);
     font-family: var(--body_font);
-    color: AliceBlue;
+    color: var(--font_color);
 }
 div {
     margin-left: 4px;
@@ -45,7 +47,7 @@ input[type=submit], .primary_button {
     font-family: var(--header_font);
     text-transform: uppercase;
     background-color: var(--accent_color);
-    color: AliceBlue;
+    color: var(--font_color);
     border-style: none;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     padding-left: 2em;
@@ -63,12 +65,12 @@ input[type=submit], .primary_button {
 
 /* misc */
 .web_link {
-    color: AliceBlue;
+    color: var(--link_color);
 }
 .annotation {
     margin-left: 0.5em;
     padding: 2px 5px 2px 5px;
-    background: AliceBlue;
+    background: var(--font_color);
     color: var(--background_color);
     font-family: var(--header_font);
 }
