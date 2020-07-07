@@ -35,7 +35,14 @@
         <h3>Matching sessions:</h3>
             <ul>
                 {% for each in sessions %}
-                    <li class="list_section_header">{{ each.spotName }}</li>
+                    <li class="list_section_header">{{ each.spotName }}
+                        {% if each.unsurfable_count > 0 %}
+                            <span class="annotation_bad">Shitty</span>
+                        {% endif %}
+                        {% if each.legendary_count > 0 %}
+                            <span class="annotation_good">Legendary</span>
+                        {% endif %}
+                    </li>
                     <ul>
                         <li>{{ each.id__count }} sessions</li>
                         <li>Avg score: {{ each.surfScore__avg|floatformat:1 }} out of 5</li>
@@ -46,6 +53,7 @@
         <hr>
         <h3>What does all this mean?</h3>
         <p>This shows other times you've surfed similar conditions</p>
+        <p>An annotation of "SHITTY" means at least one of the sessions was marked as "not surfable"</p>
         <p>Remember, a score of 5 is the most fun you can have on a surfboard:</p>
         <li>5: Legendary</li>
         <li>4: Really fun, worth skipping work for</li>

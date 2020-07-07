@@ -2,7 +2,7 @@ import requests
 import json
 
 from django.db import models
-from django.db.models import Avg, Count
+from django.db.models import Avg, Count, Case, When, IntegerField
 from django.utils.timezone import make_aware, is_naive
 
 from datetime import datetime, timedelta, timezone
@@ -14,6 +14,7 @@ class Swell(models.Model):
     # class attributes
     JUNK_THRESHOLD = 1.0
 
+    # DB fields
     height = models.DecimalField(max_digits=4, decimal_places=2)
     period = models.DecimalField(max_digits=4, decimal_places=2)
     direction = models.DecimalField(max_digits=5, decimal_places=2)
@@ -79,6 +80,7 @@ class Swell(models.Model):
 
 
 class Tide(models.Model):
+    # DB fields
     timestamp = models.DateTimeField()
     height = models.DecimalField(max_digits=4, decimal_places=2)
     type = models.CharField(max_length=20)
@@ -124,6 +126,11 @@ class SurfSpot(models.Model):
 
 
 class SurfSession(models.Model):
+    # class attributes
+    HIGHEST_SURF_SCORE = 5
+    LOWEST_SURF_SCORE = 0
+
+    # DB fields
     spotName = models.CharField(max_length=100)
     surflineId = models.CharField(max_length=100)
     spotUtcOffset = models.DecimalField(max_digits=4, decimal_places=2)
@@ -253,7 +260,15 @@ class SurfSession(models.Model):
 
         sessions = rawSessions.values("spotName").annotate(Avg("surfScore"),
                                                            Avg("waveCount"),
-                                                           Count("id", distinct=True)).order_by('-id__count')
+                                                           Count("id", distinct=True),
+                                                           unsurfable_count=Count(Case(
+                                                               When(surfScore=cls.LOWEST_SURF_SCORE, then=1),
+                                                               output_field=IntegerField(),
+                                                           )),
+                                                           legendary_count=Count(Case(
+                                                               When(surfScore=cls.HIGHEST_SURF_SCORE, then=1),
+                                                               output_field=IntegerField(),
+                                                           ))).order_by('-id__count')
 
         print(sessions)
 

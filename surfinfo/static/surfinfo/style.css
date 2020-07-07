@@ -3,7 +3,7 @@
 /* name some colors and fonts*/
 :root {
     --accent_color: #FF0266;
-    --error_color: #CC0000;
+    --error_color: #FF9F1C;
     --background_color: #1E2019;
     --font_color: #F0F8FF;
     --link_color: #F0F8FF;
@@ -67,13 +67,21 @@ input[type=submit], .primary_button {
 .web_link {
     color: var(--link_color);
 }
-.annotation {
+.annotation_good {
     margin-left: 0.5em;
     padding: 2px 5px 2px 5px;
     background: var(--font_color);
     color: var(--background_color);
     font-family: var(--header_font);
 }
+.annotation_bad {
+    margin-left: 0.5em;
+    padding: 2px 5px 2px 5px;
+    background: var(--font_color);
+    color: var(--background_color);
+    font-family: var(--header_font);
+}
+
 
 /* lists */
 .list_section_header {
