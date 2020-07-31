@@ -162,10 +162,6 @@ class SurfSession(models.Model):
 
         return str(self.spotName) + ', score: ' + str(self.surfScore) + '\n' + swells + '\n'
 
-    # returns a list of swells
-    def get_swells(self):
-        return list(self.swells.all())
-
     # helper method to extract surf info from a URL, create a new SurfSession object with that info, and save to DB
     @classmethod
     def from_surfline(cls, spotId, spotName, startTime, endTime, surfScore, crowdScore, waveCount):
