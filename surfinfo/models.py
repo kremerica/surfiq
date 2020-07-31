@@ -162,6 +162,10 @@ class SurfSession(models.Model):
 
         return str(self.spotName) + ', score: ' + str(self.surfScore) + '\n' + swells + '\n'
 
+    # returns a list of swells
+    def get_swells(self):
+        return list(self.swells.all())
+
     # helper method to extract surf info from a URL, create a new SurfSession object with that info, and save to DB
     @classmethod
     def from_surfline(cls, spotId, spotName, startTime, endTime, surfScore, crowdScore, waveCount):
@@ -221,7 +225,7 @@ class SurfSession(models.Model):
 
     # helper method to find matching sessions for a given Swell + Tide
     @classmethod
-    def get_matching_sessions(cls, swellHeight, swellPeriod, swellDirection, tideHeight):
+    def get_matching_sessions(cls, swellHeight, swellPeriod, swellDirection, tideHeight, processedFlag):
         height_factor_low_end = 0.3
         height_factor_high_end = 0.1
         period_factor_low_end = 3
@@ -270,7 +274,7 @@ class SurfSession(models.Model):
                                                                output_field=IntegerField(),
                                                            ))).order_by('-id__count')
 
-        print(sessions)
+        # print(sessions)
 
         # debugging statement: https://surfiq.atlassian.net/jira/software/projects/SI/boards/1?selectedIssue=SI-65
         # TODO comment this print statement out
@@ -284,7 +288,10 @@ class SurfSession(models.Model):
         #    for each in experimentalSessions:
         #        print(each)
 
-        return list(sessions)
+        if processedFlag:
+            return list(sessions)
+        else:
+            return list(rawSessions)
 
     # bootstrap DB with historical data in surfinfo/surfdatabootstrap
     @classmethod

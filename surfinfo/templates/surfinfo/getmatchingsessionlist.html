@@ -1,0 +1,44 @@
+{% load tz %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>FULL SESSION INFO BROH</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'surfinfo/style.css' %}">
+    <link rel="shortcut icon" href="{% static 'surfinfo/favicon.ico' %}"/>
+    <link rel="apple-touch-icon" href="{% static 'surfinfo/favicon.ico' %}"/>
+</head>
+<body>
+    <div>
+        <h1>DEBUG PURPOSES ONLY</h1>
+        <h2>Session info dump</h2>
+    </div>
+    {% if swellHeight %}
+    <h3>{{ swellHeight }}ft at {{ swellPeriod }}s, {{ swellDirection }}° ({{ swellPower }} kW/m)</h3>
+    <h3>{{ tideHeight }}ft tide</h3>
+    <hr>
+
+        {% if sessions %}
+        {% for each in sessions %}
+            <li class="list_section_header">{{ each.spotName }}</li>
+            <ul>
+                <li>{{ each.timeIn|timezone:surftimezone|date:"M j, Y g:i A" }} - {{ each.timeOut|timezone:surftimezone|date:"g:i A" }}</li>
+                <li>Score: {{ each.surfScore|floatformat:1 }} out of 5</li>
+                <li>Wave count: {{ each.waveCount|floatformat:0 }}</li>
+                <li>Swells</li>
+                {% for swell in each.swells.all %}
+                    <ul>
+                        <li>{{ swell.height|floatformat:1 }}ft at {{ swell.period|floatformat:0 }} sec, {{ swell.direction|floatformat:0 }}° ({{ swell.power }} kW/m)</li>
+                    </ul>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+
+        {% else %}
+        <h3>No matching sessions bro</h3>
+        {% endif %}
+    {% endif %}
+</body>
+</html>

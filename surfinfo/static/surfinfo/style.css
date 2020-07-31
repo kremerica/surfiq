@@ -56,6 +56,21 @@ input[type=submit], .primary_button {
     text-decoration: none;
     -webkit-appearance: none;
 }
+.secondary_button {
+    margin-top: 15px;
+    font-size: 1.5em;
+    font-family: var(--header_font);
+    text-transform: uppercase;
+    background-color: var(--font_color);
+    color: var(--background_color);
+    border-style: none;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    padding-left: 2em;
+    padding-right: 2em;
+
+    text-decoration: none;
+    -webkit-appearance: none;
+}
 
 .errorlist {
     list-style-type: none;

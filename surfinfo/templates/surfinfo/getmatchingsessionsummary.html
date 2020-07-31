@@ -33,23 +33,23 @@
         <h2>{{ tideHeight }}ft tide</h2>
         {% if sessions %}
         <h3>Matching sessions:</h3>
-            <ul>
-                {% for each in sessions %}
-                    <li class="list_section_header">{{ each.spotName }}
-                        {% if each.unsurfable_count > 0 %}
-                            <span class="annotation_bad">Shitty</span>
-                        {% endif %}
-                        {% if each.legendary_count > 0 %}
-                            <span class="annotation_good">Legendary</span>
-                        {% endif %}
-                    </li>
-                    <ul>
-                        <li>{{ each.id__count }} sessions</li>
-                        <li>Avg score: {{ each.surfScore__avg|floatformat:1 }} out of 5</li>
-                        <li>Avg wave count: {{ each.waveCount__avg|floatformat:0 }}</li>
-                    </ul>
-                {% endfor %}
-            </ul>
+            {% for each in sessions %}
+                <li class="list_section_header">{{ each.spotName }}
+                    {% if each.unsurfable_count > 0 %}
+                        <span class="annotation_bad">Shitty</span>
+                    {% endif %}
+                    {% if each.legendary_count > 0 %}
+                        <span class="annotation_good">Legendary</span>
+                    {% endif %}
+                </li>
+                <ul>
+                    <li>{{ each.id__count }} sessions</li>
+                    <li>Avg score: {{ each.surfScore__avg|floatformat:1 }} out of 5</li>
+                    <li>Avg wave count: {{ each.waveCount__avg|floatformat:0 }}</li>
+                </ul>
+            {% endfor %}
+        <hr>
+        <a class="secondary_button" href="sessionlistbro?swellHeight={{ swellHeight }}&swellPeriod={{ swellPeriod }}&swellDirection={{ swellDirection }}&tideHeight={{ tideHeight }}">DEBUG: DATA DUMP</a>
         <hr>
         <h3>What does all this mean?</h3>
         <p>This shows other times you've surfed similar conditions</p>

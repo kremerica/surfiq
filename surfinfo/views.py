@@ -114,9 +114,10 @@ def session_matches_conditions(request):
     sessions = SurfSession.get_matching_sessions(swellHeight=swell.height,
                                                  swellPeriod=swell.period,
                                                  swellDirection=swell.direction,
-                                                 tideHeight=tide)
+                                                 tideHeight=tide,
+                                                 processedFlag=True)
 
-    return render(request, 'surfinfo/getmatchingsessions.html',
+    return render(request, 'surfinfo/getmatchingsessionsummary.html',
                   {'form': form,
                    'swellHeight': swell.height,
                    'swellPeriod': swell.period,
@@ -124,6 +125,34 @@ def session_matches_conditions(request):
                    'swellPower': swell.power,
                    'tideHeight': tide,
                    'sessions': sessions})
+
+
+# show full detailed view of all matching sessions for a set of conditions and a spot
+# find matching sessions for surf conditions
+def full_list_session_matches_conditions(request):
+    tide = request.GET.get('tideHeight', 0)
+
+    swell = Swell(height=request.GET.get('swellHeight', 0),
+                  period=request.GET.get('swellPeriod', 0),
+                  direction=request.GET.get('swellDirection', 0))
+
+    sessions = SurfSession.get_matching_sessions(swellHeight=swell.height,
+                                                 swellPeriod=swell.period,
+                                                 swellDirection=swell.direction,
+                                                 tideHeight=tide,
+                                                 processedFlag=False)
+
+    surftimezone = timezone(offset=timedelta(hours=int(sessions[0].spotUtcOffset)))
+
+    return render(request, 'surfinfo/getmatchingsessionlist.html',
+                  {'swellHeight': swell.height,
+                   'swellPeriod': swell.period,
+                   'swellDirection': swell.direction,
+                   'swellPower': swell.power,
+                   'tideHeight': tide,
+                   'sessions': sessions,
+                   'surftimezone': surftimezone,
+                   })
 
 
 # find matching sessions for conditions at a given time and region
