@@ -50,8 +50,8 @@ input[type=submit], .primary_button {
     color: var(--font_color);
     border-style: none;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    padding-left: 2em;
-    padding-right: 2em;
+    padding-left: 1em;
+    padding-right: 1em;
 
     text-decoration: none;
     -webkit-appearance: none;
@@ -65,8 +65,8 @@ input[type=submit], .primary_button {
     color: var(--background_color);
     border-style: none;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    padding-left: 2em;
-    padding-right: 2em;
+    padding-left: 1em;
+    padding-right: 1em;
 
     text-decoration: none;
     -webkit-appearance: none;

@@ -25,7 +25,7 @@
             <li class="list_section_header">{{ each.spotName }}</li>
             <ul>
                 <li>{{ each.timeIn|timezone:surftimezone|date:"M j, Y g:i A" }} - {{ each.timeOut|timezone:surftimezone|date:"g:i A" }}</li>
-                <li>Score: {{ each.surfScore|floatformat:1 }} out of 5</li>
+                <li>Score: {{ each.surfScore|floatformat:0 }} out of 5</li>
                 <li>Wave count: {{ each.waveCount|floatformat:0 }}</li>
                 <li>Swells</li>
                 {% for swell in each.swells.all %}
