@@ -372,3 +372,13 @@ class SurfSession(models.Model):
                 # print("")
 
         return True
+
+    # export surf sessions in JSON format, ready to be appended to surfdatabootstrap.json
+    @classmethod
+    def data_extract(cls, surfSessionId):
+        if SurfSession.objects.filter(id=surfSessionId).exists():
+            extractSession = SurfSession.objects.get(id=surfSessionId)
+        else:
+            extractSession = None
+
+        return extractSession

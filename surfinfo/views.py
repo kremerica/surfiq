@@ -196,7 +196,12 @@ def session_matches_time_and_place(request):
 # -----------------------------------------------------------------------------------
 # bootstrap DB with historical data
 def data_bootstrap(request):
-    if SurfSession.data_bootstrap():
-        return HttpResponse("All done bro, historical sessions locked and loaded")
+    sessionId = request.GET.get('id', 0)
+
+    if int(sessionId) > 0:
+        return HttpResponse(SurfSession.data_extract(sessionId))
     else:
-        return HttpResponse("Already bootstrapped bro, ADIOS MOTHAFUCKA")
+        if SurfSession.data_bootstrap():
+            return HttpResponse("All done bro, historical sessions locked and loaded")
+        else:
+            return HttpResponse("Already bootstrapped bro, ADIOS MOTHAFUCKA")
