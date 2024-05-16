@@ -131,4 +131,4 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 django_heroku.settings(locals())
 
 # This is new
-del DATABASES['default']['OPTIONS']['sslmode']
+#del DATABASES['default']['OPTIONS']['sslmode']

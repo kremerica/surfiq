@@ -50,11 +50,11 @@ class Swell(models.Model):
         swells = []
 
         if subregionFlag:
-            # any more than 6 days of forecast requires a Surfline authentication token
-            surfUrl = 'https://services.surfline.com/kbyg/regions/forecasts/wave?subregionId=' + surflineId + '&days=6&intervalHours=1&maxHeights=false'
+            # any more than 5 days of forecast requires a Surfline authentication token
+            surfUrl = 'https://services.surfline.com/kbyg/regions/forecasts/wave?subregionId=' + surflineId + '&days=5&intervalHours=1&maxHeights=false'
         else:
-            # any more than 6 days of forecast requires a Surfline authentication token
-            surfUrl = 'https://services.surfline.com/kbyg/spots/forecasts/wave?spotId=' + surflineId + '&days=6&intervalHours=1&maxHeights=false'
+            # any more than 5 days of forecast requires a Surfline authentication token
+            surfUrl = 'https://services.surfline.com/kbyg/spots/forecasts/wave?spotId=' + surflineId + '&days=5&intervalHours=1&maxHeights=false'
 
         surf = requests.get(surfUrl)
         surfReport = json.loads(surf.text)
